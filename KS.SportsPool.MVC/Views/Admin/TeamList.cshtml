@@ -1,0 +1,59 @@
+﻿@using KS.SportsPool.Data.POCO;
+@model IEnumerable<Team>
+<p id="errorMessage" style="color: #ff0000; font-size:large;">
+    @ViewBag.Error
+</p>
+<p id="successMessage" style="color: #00ff00; font-size:large;">
+    @ViewBag.Success
+</p>
+
+@foreach (Team team in Model
+    .OrderBy(te => te.Conference)
+    .ThenBy(te => te.Division))
+{
+    using (Ajax.BeginForm("UpdateTeam", new AjaxOptions { HttpMethod = "Post", LoadingElementId = "loadingSymbol", UpdateTargetId = "errorMessage" }))
+    {
+        @:<div style="border: 1px solid #000000; padding: 5px;">
+        @:<p>
+            string imgSrc = team.Abbreviation.ToUpper() + "_100.png";
+            <div><img style="max-height: 100px; max-width: 100px;" src="~/Images/Teams/@imgSrc" /></div>
+            @Html.Hidden("Id", team.Id);
+            @Html.Label("Name")
+            @:&nbsp;
+            @Html.TextBox("Name", team.Name);
+            @:&nbsp;
+            @Html.Label("Abbreviation")
+            @:&nbsp;
+            @Html.TextBox("Abbreviation", team.Abbreviation);
+            @:&nbsp;
+            @Html.Label("Conference")
+            @:&nbsp;
+            @Html.TextBox("Conference", team.Conference);
+            @:&nbsp;
+            @Html.Label("Division")
+            @:&nbsp;
+            @Html.TextBox("Division", team.Division);
+            @:&nbsp;
+        @:</p>
+        @:<p>
+            @Html.Label("Round 1")
+            @:&nbsp;
+            @Html.TextBox("Round1", team.Round1);
+            @:&nbsp;
+            @Html.Label("Round 2")
+            @:&nbsp;
+            @Html.TextBox("Round2", team.Round2);
+            @:&nbsp;
+            @Html.Label("Round 3")
+            @:&nbsp;
+            @Html.TextBox("Round3", team.Round3);
+            @:&nbsp;
+            @Html.Label("Round 4")
+            @:&nbsp;
+            @Html.TextBox("Round4", team.Round3);
+            @:&nbsp;
+        @:</p>
+        <button type="submit" class="btn btn-primary">Save Team</button>
+        @:</div>
+    }
+}
