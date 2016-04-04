@@ -26,10 +26,13 @@ textarea {
 div.table 
 {
     display:table;
+    border-collapse: collapse;
 }
 form.tr, div.tr
 {
     display:table-row;
+    border-bottom: solid white 30px;    
+    margin: 10px;
 }
 span.td
 {

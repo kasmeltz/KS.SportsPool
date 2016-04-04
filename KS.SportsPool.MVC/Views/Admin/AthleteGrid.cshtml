@@ -1,0 +1,34 @@
+﻿@using KS.SportsPool.MVC.Models;
+@using KS.SportsPool.Data.POCO;
+@model AthleteViewModel
+
+@{
+    List<SelectListItem> teamListItems = new List<SelectListItem>();
+    foreach (Team team in Model.Teams)
+    {
+        teamListItems.Add(new SelectListItem
+        {
+            Text = team.Name,
+            Value = team.Id.ToString(),
+            Selected = team.Id == Model.Athlete.TeamId
+        });
+    }
+
+    using (Html.BeginForm("UpdateAthlete", "Admin", null, FormMethod.Post, new { @class = "tr", id = "AthleteDiv" + Model.Athlete.Id }))
+    {
+        @Html.Hidden("Id", Model.Athlete.Id)
+        @Html.Hidden("Year", Model.Athlete.Year)
+        @Html.Hidden("GroupName", Model.Athlete.GroupName)
+        <span class="td">
+            <button type="submit" class="btn btn-primary">Save Athlete</button>
+            <br />
+            <a href="/Admin/DeleteAthlete/@{ WriteLiteral(Model.Athlete.Id); }" class="btn btn-danger">Delete Athlete</a>
+        </span>
+        <span class="td">@Html.DropDownList("TeamId", teamListItems)</span>
+        <span class="td">@Html.TextBox("FirstName", Model.Athlete.FirstName)</span>
+        <span class="td">@Html.TextBox("LastName", Model.Athlete.LastName)</span>
+        <span class="td">@Html.TextBox("Position", Model.Athlete.Position)</span>
+        <span class="td">@Html.TextBox("Goals", Model.Athlete.Goals)</span>
+        <span class="td">@Html.TextBox("Assists", Model.Athlete.Assists)</span>
+    }
+}

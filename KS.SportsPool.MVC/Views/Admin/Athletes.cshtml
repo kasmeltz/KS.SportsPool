@@ -2,6 +2,15 @@
 @using KS.SportsPool.Data.POCO;
 @model AthleteListViewModel
 
+<div style="position: fixed; text-align: center; background:#dddddd; bottom:0px; left:0px; width:100%; border: 1px solid black;">
+    <p id="errorMessage" style="color: #ff0000; font-size:large;">
+        @ViewBag.Error
+    </p>
+    <p id="successMessage" style="color: #00ff00; font-size:large;">
+        @ViewBag.Success
+    </p>
+</div>
+
 @{ 
     List<SelectListItem> teamListItems = new List<SelectListItem>();
     foreach(Team team in Model.Teams)
@@ -16,7 +25,7 @@
     <a href="/Admin/Teams" class="btn btn-primary">Teams</a>
     <h1>Athletes</h1>
     <div style="border: 1px solid #000000; padding: 5px;">
-        @using (Ajax.BeginForm("AddAthlete", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "teamList", LoadingElementId = "loadingSymbol" }))
+        @using (Html.BeginForm("AddAthlete", "Admin", null, FormMethod.Post))
         {
             <p>
                 @Html.Label("Team")
@@ -45,9 +54,18 @@
         }
     </div>
 
-    <div id="loadingSymbol" style="display: none;">LOADING PLEASE WAIT...</div>
-
     <div id="teamList">
         @{Html.RenderPartial(@"AthleteList", Model);}
     </div>
 </div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var anchor = document.getElementById('@ViewBag.ScrollSection');
+            if (anchor) {
+                anchor.scrollIntoView(true);
+            }
+        });
+    </script>
+}

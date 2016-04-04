@@ -171,6 +171,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AthleteViewModel.cs" />
     <Compile Include="Models\AthleteListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -313,6 +314,7 @@
     <Content Include="Views\Admin\TeamList.cshtml" />
     <Content Include="Views\Admin\AthleteList.cshtml" />
     <Content Include="Views\Admin\TeamGrid.cshtml" />
+    <Content Include="Views\Admin\AthleteGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

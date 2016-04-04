@@ -1,74 +1,31 @@
 ﻿@using KS.SportsPool.MVC.Models;
 @using KS.SportsPool.Data.POCO;
 @model AthleteListViewModel
-
+    
 @{
-    List<SelectListItem> teamListItems = new List<SelectListItem>();
-    foreach (Team team in Model.Teams)
+    var groups = Model.Athletes.GroupBy(ath => ath.GroupName);
+    foreach (var group in groups)
     {
-        teamListItems.Add(new SelectListItem { Text = team.Name, Value = team.Id.ToString() });        
-    }
-}
-
-<p id="errorMessage" style="color: #ff0000; font-size:large;">
-    @ViewBag.Error
-</p>
-<p id="successMessage" style="color: #00ff00; font-size:large;">
-    @ViewBag.Success
-</p>
-
-@foreach (Athlete athlete in Model.Athletes
-                .OrderBy(te => te.GroupName)
-                .ThenBy(te => te.TeamId)
-                .ThenBy(te => te.LastName))
-{
-    using (Ajax.BeginForm("UpdateAthlete", new AjaxOptions { HttpMethod = "Post", LoadingElementId = "loadingSymbol", UpdateTargetId = "athleteMessage" + athlete.Id }))
-    {
-        teamListItems = new List<SelectListItem>();
-            foreach (Team team in Model.Teams)
+        Athlete groupAthlete = group.FirstOrDefault();
+        <div>
+            <h2>
+                @groupAthlete.GroupName
+            </h2>
+        </div>
+        <div class="table">
+            <div class="tr">
+                <span class="td">&nbsp;</span>
+                <span class="td">Team</span>
+                <span class="td">First Name</span>
+                <span class="td">Last Name</span>
+                <span class="td">Position</span>
+                <span class="td">Goals</span>
+                <span class="td">Assists</span>
+            </div>
+            @foreach (Athlete athlete in group)
             {
-                teamListItems.Add(new SelectListItem
-                {
-                    Text = team.Name,
-                    Value = team.Id.ToString(),
-                    Selected = team.Id == athlete.TeamId
-                });
+                Html.RenderPartial("AthleteGrid", new AthleteViewModel { Athlete = athlete, Teams = Model.Teams });
             }
-
-        <div style="border: 1px solid #000000; padding: 5px;">
-        <p id="athleteMessage@{ WriteLiteral(athlete.Id); }" style="color: #ff0000; font-size:large;"></p>
-        <p>
-            @Html.Hidden("Id", athlete.Id)
-            @Html.Label("Team")
-            &nbsp;
-            @Html.DropDownList("TeamId", teamListItems)
-            &nbsp;
-            @Html.Label("GroupName")
-            &nbsp;
-            @Html.TextBox("GroupName", athlete.GroupName)
-            &nbsp;
-            @Html.Label("Position")
-            &nbsp;
-            @Html.TextBox("Position", athlete.Position)
-        </p>
-        <p>
-            @Html.Label("FirstName")
-            &nbsp;
-            @Html.TextBox("FirstName", athlete.FirstName)
-            &nbsp;
-            @Html.Label("LastName")
-            &nbsp;
-            @Html.TextBox("LastName", athlete.LastName)
-            &nbsp;
-            @Html.Label("Goals")
-            &nbsp;
-            @Html.TextBox("Goals", athlete.Goals)
-            &nbsp;
-            @Html.Label("Assists")
-            &nbsp;
-            @Html.TextBox("Assists", athlete.Assists)
-        </p>            
-        <button type="submit" class="btn btn-primary">Save Athlete</button>
         </div>
     }
-}
+}     

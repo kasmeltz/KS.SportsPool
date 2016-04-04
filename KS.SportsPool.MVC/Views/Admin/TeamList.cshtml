@@ -3,9 +3,6 @@
 
 @{ 
     var conferences = Model.GroupBy(te => te.Conference);
-}
-
-@{
     foreach(var conference in conferences)
     {
         Team teamConference = conference.FirstOrDefault();
