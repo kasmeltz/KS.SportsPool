@@ -171,6 +171,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AthleteListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\UIUtilities.cs" />
@@ -310,10 +311,10 @@
     <Content Include="Views\Admin\Teams.cshtml" />
     <Content Include="Views\Admin\Athletes.cshtml" />
     <Content Include="Views\Admin\TeamList.cshtml" />
+    <Content Include="Views\Admin\AthleteList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

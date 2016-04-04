@@ -2,26 +2,31 @@
 @model IEnumerable<Team>
 
 <div style="width: 100%; text-align: center;">
+    <a href="/Admin/Pools" class="btn btn-primary">Pools</a>
+    <a href="/Admin/Athletes" class="btn btn-primary">Athletes</a>
+    <a href="/Admin/Teams" class="btn btn-primary">Teams</a>
     <h1>Teams</h1>
     <div style="border: 1px solid #000000; padding: 5px;">
         @using (Ajax.BeginForm("AddTeam", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "teamList", LoadingElementId = "loadingSymbol" }))
         {
-            @Html.Label("Name")
-            @:&nbsp;
-            @Html.TextBox("Name")
-            @:&nbsp;
-            @Html.Label("Abbreviation")
-            @:&nbsp;
-            @Html.TextBox("Abbreviation")
-            @:&nbsp;
-            @Html.Label("Conference")
-            @:&nbsp;
-            @Html.TextBox("Conference")
-            @:&nbsp;
-            @Html.Label("Division")
-            @:&nbsp;
-            @Html.TextBox("Division")
-            @:&nbsp;
+            <p>
+                @Html.Label("Name")
+                &nbsp;
+                @Html.TextBox("Name")
+                &nbsp;
+                @Html.Label("Abbreviation")
+                &nbsp;
+                @Html.TextBox("Abbreviation")
+                &nbsp;
+                @Html.Label("Conference")
+                &nbsp;
+                @Html.TextBox("Conference")
+                &nbsp;
+                @Html.Label("Division")
+                &nbsp;
+                @Html.TextBox("Division")
+                &nbsp;
+            </p>
             <button type="submit" class="btn btn-primary">Add Team</button>
         }
     </div>

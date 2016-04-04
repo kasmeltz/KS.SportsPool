@@ -1,2 +1,53 @@
-﻿<h1>@ViewBag.Title</h1>
-<img src="~/Images/NHL_Shield.png" />
+﻿@using KS.SportsPool.MVC.Models;
+@using KS.SportsPool.Data.POCO;
+@model AthleteListViewModel
+
+@{ 
+    List<SelectListItem> teamListItems = new List<SelectListItem>();
+    foreach(Team team in Model.Teams)
+    {
+        teamListItems.Add(new SelectListItem { Text = team.Name, Value = team.Id.ToString() });
+    }
+}
+
+<div style="width: 100%; text-align: center;">
+    <a href="/Admin/Pools" class="btn btn-primary">Pools</a>
+    <a href="/Admin/Athletes" class="btn btn-primary">Athletes</a>
+    <a href="/Admin/Teams" class="btn btn-primary">Teams</a>
+    <h1>Athletes</h1>
+    <div style="border: 1px solid #000000; padding: 5px;">
+        @using (Ajax.BeginForm("AddAthlete", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "teamList", LoadingElementId = "loadingSymbol" }))
+        {
+            <p>
+                @Html.Label("Team")
+                &nbsp;
+                @Html.DropDownList("TeamId", teamListItems)
+                &nbsp;
+                @Html.Label("GroupName")
+                &nbsp;
+                @Html.TextBox("GroupName")
+            </p>
+            <p>
+                @Html.Label("FirstName")
+                &nbsp;
+                @Html.TextBox("FirstName")
+                &nbsp;
+                @Html.Label("LastName")
+                &nbsp;
+                @Html.TextBox("LastName")
+                &nbsp;                
+                @Html.Label("Position")
+                &nbsp;
+                @Html.TextBox("Position")
+                &nbsp;
+            </p>
+            <button type="submit" class="btn btn-primary">Add Athlete</button>
+        }
+    </div>
+
+    <div id="loadingSymbol" style="display: none;">LOADING PLEASE WAIT...</div>
+
+    <div id="teamList">
+        @{Html.RenderPartial(@"AthleteList", Model);}
+    </div>
+</div>

@@ -11,9 +11,10 @@
     .OrderBy(te => te.Conference)
     .ThenBy(te => te.Division))
 {
-    using (Ajax.BeginForm("UpdateTeam", new AjaxOptions { HttpMethod = "Post", LoadingElementId = "loadingSymbol", UpdateTargetId = "errorMessage" }))
+    using (Ajax.BeginForm("UpdateTeam", new AjaxOptions { HttpMethod = "Post", LoadingElementId = "loadingSymbol", UpdateTargetId = "teamMessage" + team.Id }))
     {
         @:<div style="border: 1px solid #000000; padding: 5px;">
+        <p id="teamMessage@{ WriteLiteral(team.Id); }" style="color: #ff0000; font-size:large;"></p>
         @:<p>
             string imgSrc = team.Abbreviation.ToUpper() + "_100.png";
             <div><img style="max-height: 100px; max-width: 100px;" src="~/Images/Teams/@imgSrc" /></div>
