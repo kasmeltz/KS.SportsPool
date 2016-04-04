@@ -71,7 +71,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             CacheSeconds = 15; 
 
             DbConnectionString = ConfigurationManager
-                .ConnectionStrings["HockeyGMDB"]
+                .ConnectionStrings["HockeyPoolDB"]
                 .ToString();
 
             CacheProvider = cacheProvider;

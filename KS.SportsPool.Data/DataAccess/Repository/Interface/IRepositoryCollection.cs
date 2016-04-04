@@ -6,5 +6,6 @@
     public interface IRepositoryCollection
     {
         IAthleteRepository Athletes();
+        ITeamRepository Teams();
     }
 }
