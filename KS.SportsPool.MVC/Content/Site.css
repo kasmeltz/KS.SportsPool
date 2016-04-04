@@ -22,3 +22,16 @@ select,
 textarea {
     max-width: 280px;
 }
+
+div.table 
+{
+    display:table;
+}
+form.tr, div.tr
+{
+    display:table-row;
+}
+span.td
+{
+    display:table-cell;
+}

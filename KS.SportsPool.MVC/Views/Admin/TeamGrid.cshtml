@@ -1,0 +1,25 @@
+﻿@using KS.SportsPool.Data.POCO;
+@model Team
+
+@{
+    string imgSrc = Model.Abbreviation.ToUpper() + "_100.png";
+    <div class="tr">
+        <span class="td" id="teamMessage@{ WriteLiteral(Model.Id); }" style="color: #ff0000; font-size:large;"></span>
+    </div>
+    using (Ajax.BeginForm("UpdateTeam", new AjaxOptions
+        {
+            HttpMethod = "Post",
+            LoadingElementId = "loadingSymbol",
+            UpdateTargetId = "teamMessage" + Model.Id
+        }, null, new { @class = "tr" }))
+    {
+        @Html.Hidden("Id", Model.Id)
+        <span class="td"><img style="max-height: 100px; max-width: 100px;" src="~/Images/Teams/@imgSrc" /><button type="submit" class="btn btn-primary">Save Team</button></span>
+        <span class="td">@Html.TextBox("Name", Model.Name)</span>
+        <span class="td">@Html.TextBox("Abbreviation", Model.Abbreviation)</span>
+        <span class="td">@Html.TextBox("Round1", Model.Round1)</span>
+        <span class="td">@Html.TextBox("Round2", Model.Round2)</span>
+        <span class="td">@Html.TextBox("Round3", Model.Round3)</span>
+        <span class="td">@Html.TextBox("Round4", Model.Round4)</span>
+    }
+}

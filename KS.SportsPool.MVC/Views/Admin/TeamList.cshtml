@@ -1,5 +1,10 @@
 ﻿@using KS.SportsPool.Data.POCO;
 @model IEnumerable<Team>
+
+@{ 
+    var conferences = Model.GroupBy(te => te.Conference);
+}
+
 <p id="errorMessage" style="color: #ff0000; font-size:large;">
     @ViewBag.Error
 </p>
@@ -7,54 +12,38 @@
     @ViewBag.Success
 </p>
 
-@foreach (Team team in Model
-    .OrderBy(te => te.Conference)
-    .ThenBy(te => te.Division))
-{
-    using (Ajax.BeginForm("UpdateTeam", new AjaxOptions { HttpMethod = "Post", LoadingElementId = "loadingSymbol", UpdateTargetId = "teamMessage" + team.Id }))
+@{
+    foreach(var conference in conferences)
     {
-        @:<div style="border: 1px solid #000000; padding: 5px;">
-        <p id="teamMessage@{ WriteLiteral(team.Id); }" style="color: #ff0000; font-size:large;"></p>
-        @:<p>
-            string imgSrc = team.Abbreviation.ToUpper() + "_100.png";
-            <div><img style="max-height: 100px; max-width: 100px;" src="~/Images/Teams/@imgSrc" /></div>
-            @Html.Hidden("Id", team.Id);
-            @Html.Label("Name")
-            @:&nbsp;
-            @Html.TextBox("Name", team.Name);
-            @:&nbsp;
-            @Html.Label("Abbreviation")
-            @:&nbsp;
-            @Html.TextBox("Abbreviation", team.Abbreviation);
-            @:&nbsp;
-            @Html.Label("Conference")
-            @:&nbsp;
-            @Html.TextBox("Conference", team.Conference);
-            @:&nbsp;
-            @Html.Label("Division")
-            @:&nbsp;
-            @Html.TextBox("Division", team.Division);
-            @:&nbsp;
-        @:</p>
-        @:<p>
-            @Html.Label("Round 1")
-            @:&nbsp;
-            @Html.TextBox("Round1", team.Round1);
-            @:&nbsp;
-            @Html.Label("Round 2")
-            @:&nbsp;
-            @Html.TextBox("Round2", team.Round2);
-            @:&nbsp;
-            @Html.Label("Round 3")
-            @:&nbsp;
-            @Html.TextBox("Round3", team.Round3);
-            @:&nbsp;
-            @Html.Label("Round 4")
-            @:&nbsp;
-            @Html.TextBox("Round4", team.Round3);
-            @:&nbsp;
-        @:</p>
-        <button type="submit" class="btn btn-primary">Save Team</button>
-        @:</div>
+        Team teamConference = conference.FirstOrDefault();
+        <div>
+            <h2>
+                @teamConference.Conference
+            </h2>
+        </div>
+        foreach (var division in conference.GroupBy(te => te.Division))
+        {
+            Team teamDivision = division.FirstOrDefault();
+            <div>
+                <h3>
+                    @teamDivision.Division
+                </h3>
+            </div>
+            <div class="table">
+                <div class="tr">
+                    <span class="td">&nbsp;</span>
+                    <span class="td">Name</span>
+                    <span class="td">Abbreviation</span>
+                    <span class="td">Round 1</span>
+                    <span class="td">Round 2</span>
+                    <span class="td">Round 3</span>
+                    <span class="td">Round 4</span>                    
+                </div>
+                @foreach (Team team in division)
+                {
+                    Html.RenderPartial("TeamGrid", team);
+                }
+            </div>
+        }
     }
 }

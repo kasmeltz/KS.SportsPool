@@ -22,11 +22,11 @@ namespace KS.SportsPool.MVC.Controllers
 
             IEnumerable<Team> teams = await Repository
                 .Teams()
-                .List();
+                .List(DateTime.Now.Year);
 
             IEnumerable<Athlete> athletes = await Repository
                .Athletes()
-               .List();
+               .List(DateTime.Now.Year);
 
             return View(new AthleteListViewModel { Athletes = athletes, Teams = teams });
         }
@@ -37,7 +37,7 @@ namespace KS.SportsPool.MVC.Controllers
 
             IEnumerable<Team> teams = await Repository
                 .Teams()
-                .List();
+                .List(DateTime.Now.Year);
 
             return View(teams);
         }
@@ -52,15 +52,15 @@ namespace KS.SportsPool.MVC.Controllers
                 await Repository.Teams().Insert(teamToAdd);
                 teams = await Repository
                            .Teams()
-                           .List();
+                           .List(DateTime.Now.Year);
                 @ViewBag.Success = "The team was added successfully!";
                 return PartialView("TeamList", teams);
             }
             catch (Exception ex)
             {
                 teams = await Repository
-                   .Teams()
-                    .List();
+                    .Teams()
+                    .List(DateTime.Now.Year);
                 @ViewBag.Error = "There was an error adding the team!";
                 return PartialView("TeamList", teams);
             }
@@ -85,7 +85,7 @@ namespace KS.SportsPool.MVC.Controllers
         {
             IEnumerable<Team> teams = await Repository
                 .Teams()
-                .List();
+                .List(DateTime.Now.Year);
                             
             IEnumerable<Athlete> athletes = null;
 
@@ -94,7 +94,7 @@ namespace KS.SportsPool.MVC.Controllers
                 await Repository.Athletes().Insert(athleteToAdd);
                 athletes = await Repository
                     .Athletes()
-                    .List();
+                    .List(DateTime.Now.Year);
                 @ViewBag.Success = "The athlete was added successfully!";
                 return PartialView("AthleteList", new AthleteListViewModel { Athletes = athletes, Teams = teams });
             }
@@ -102,7 +102,7 @@ namespace KS.SportsPool.MVC.Controllers
             {
                 athletes = await Repository
                    .Athletes()
-                    .List();
+                    .List(DateTime.Now.Year);
                 @ViewBag.Error = "There was an error adding the athlete!";
                 return PartialView("AthleteList", new AthleteListViewModel { Athletes = athletes, Teams = teams });
             }

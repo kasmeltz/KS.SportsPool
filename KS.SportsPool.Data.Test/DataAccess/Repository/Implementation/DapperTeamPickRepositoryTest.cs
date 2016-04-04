@@ -25,7 +25,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             IRepositoryCollection collection = RepositoryTestHelper.Collection();
             ITeamPickRepository teamPickRepository = collection.TeamPicks();
             IEnumerable<TeamPick> insertedTeamPicks = RepositoryTestHelper.InsertTeamPicks();
-            IEnumerable<TeamPick> listedTeamPicks = teamPickRepository.List().Result;
+            IEnumerable<TeamPick> listedTeamPicks = teamPickRepository.List(DateTime.Now.Year).Result;
 
             IEnumerable<Team> teams = RepositoryTestHelper.InsertTeams();
             IEnumerable<PoolEntry> poolEntries = RepositoryTestHelper.InsertPoolEntries();
@@ -80,8 +80,11 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             Assert.AreEqual(3, updatedTeamPick.Round);
 
             teamPickRepository.Delete(listedTeamPicks.ElementAt(0).Id).Wait();
-            listedTeamPicks = teamPickRepository.List().Result;
+            listedTeamPicks = teamPickRepository.List(DateTime.Now.Year).Result;
             Assert.AreEqual(3, listedTeamPicks.Count());
+
+            listedTeamPicks = teamPickRepository.List(2012).Result;
+            Assert.AreEqual(0, listedTeamPicks.Count());
         }
     }
 }

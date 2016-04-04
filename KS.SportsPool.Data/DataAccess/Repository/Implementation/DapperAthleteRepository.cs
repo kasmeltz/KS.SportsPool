@@ -32,7 +32,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, TeamId, GroupName, FirstName, LastName, Position, Goals, Assists
+                Id, TeamId, Year, GroupName, FirstName, LastName, Position, Goals, Assists
             FROM 
                 [app].[Athlete]
             WHERE
@@ -41,16 +41,18 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, TeamId, GroupName, FirstName, LastName, Position, Goals, Assists
+                Id, TeamId, Year, GroupName, FirstName, LastName, Position, Goals, Assists
             FROM 
                 [app].[Athlete]
+            WHERE
+                Year = @Year
             ORDER BY
                 LastName, FirstName";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, TeamId, GroupName, FirstName, LastName, Position, Goals, Assists
+                Id, TeamId, Year, GroupName, FirstName, LastName, Position, Goals, Assists
             FROM 
                 [app].[Athlete]
             WHERE           
@@ -73,13 +75,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        LastName = @LastName
             AND
                 FirstName = @FirstName
+            AND
+                Year = @Year
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
 		        INSERT INTO [app].[Athlete]
-		        (TeamId, GroupName, FirstName, LastName, Position, Goals, Assists)
+		        (TeamId, Year, GroupName, FirstName, LastName, Position, Goals, Assists)
 		        VALUES
-		        (@TeamId, @GroupName, @FirstName, @LastName, @Position, @Goals, @Assists)
+		        (@TeamId, @Year, @GroupName, @FirstName, @LastName, @Position, @Goals, @Assists)
 
 		        SELECT TOP 1 
 			        Id
@@ -88,7 +92,9 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	            WHERE	
 		            LastName = @LastName
                 AND
-                    FirstName = @FirstName         
+                    FirstName = @FirstName    
+                AND
+                    Year = @Year     
             END
 	        ELSE
 	        BEGIN
@@ -108,6 +114,8 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        LastName = @LastName
             AND
                 FirstName = @FirstName
+            AND
+                Year = @Year     
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
@@ -115,6 +123,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
                     [app].[Athlete]
                 SET
                     TeamId = @TeamId,
+                    Year = @Year,
                     GroupName = @GroupName,
                     FirstName = @FirstName,
                     LastName = @LastName,

@@ -25,7 +25,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             IRepositoryCollection collection = RepositoryTestHelper.Collection();
             IAthletePickRepository athletePickRepository = collection.AthletePicks();
             IEnumerable<AthletePick> insertedAthletePicks = RepositoryTestHelper.InsertAthletePicks();
-            IEnumerable<AthletePick> listedAthletePicks = athletePickRepository.List().Result;
+            IEnumerable<AthletePick> listedAthletePicks = athletePickRepository.List(DateTime.Now.Year).Result;
 
             IEnumerable<Athlete> athletes = RepositoryTestHelper.InsertAthletes();
             IEnumerable<PoolEntry> poolEntries = RepositoryTestHelper.InsertPoolEntries();
@@ -76,8 +76,11 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             Assert.AreEqual(poolEntries.ElementAt(2).Id, updatedAthletePick.PoolEntryId);
 
             athletePickRepository.Delete(listedAthletePicks.ElementAt(0).Id).Wait();
-            listedAthletePicks = athletePickRepository.List().Result;
+            listedAthletePicks = athletePickRepository.List(DateTime.Now.Year).Result;
             Assert.AreEqual(3, listedAthletePicks.Count());
+
+            listedAthletePicks = athletePickRepository.List(2012).Result;
+            Assert.AreEqual(0, listedAthletePicks.Count());
         }
     }
 }

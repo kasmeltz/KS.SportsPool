@@ -31,7 +31,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, AthleteId, PoolEntryId
+                Id, AthleteId, PoolEntryId, Year
             FROM 
                 [app].[AthletePick]
             WHERE
@@ -40,11 +40,13 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, AthleteId, PoolEntryId
+                Id, AthleteId, PoolEntryId, Year
             FROM 
                 [app].[AthletePick]
+            WHERE
+                Year = @Year
             ORDER BY
-                PoolEntryId, AthleteId";    
+                PoolEntryId, AthleteId";
 
         private const string _insertSql = @"
             SET NOCOUNT ON;
@@ -59,13 +61,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
                 AthleteId = @AthleteId
             AND
 		        PoolEntryId = @PoolEntryId
+            AND
+                Year = @Year
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
 		        INSERT INTO [app].[AthletePick]
-		        (AthleteId, PoolEntryId)
+		        (AthleteId, PoolEntryId, Year)
 		        VALUES
-                (@AthleteId, @PoolEntryId)
+                (@AthleteId, @PoolEntryId, @Year)
 		        
 		        SELECT TOP 1 
 			        Id
@@ -75,6 +79,8 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		            AthleteId = @AthleteId
                 AND
 		            PoolEntryId = @PoolEntryId
+                AND
+                    Year = @Year
             END
 	        ELSE
 	        BEGIN
@@ -94,6 +100,8 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        AthleteId = @AthleteId
             AND
 		        PoolEntryId = @PoolEntryId
+            AND
+                Year = @Year
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
@@ -101,7 +109,8 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
                     [app].[AthletePick]
                 SET
                     AthleteId = @AthleteId,
-                    PoolEntryId = @PoolEntryId
+                    PoolEntryId = @PoolEntryId,
+                    Year = @Year
 		        WHERE	
 		            Id = @Id
                     

@@ -13,7 +13,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Interface
         /// Returns all of the items in the data store.
         /// </summary>
         /// <returns>All of the items in the data store.</returns>
-        Task<IEnumerable<T>> List();
+        Task<IEnumerable<T>> List(int year);
 
         /// <summary>
         /// Returns all of the items in the data store that match the search terms.

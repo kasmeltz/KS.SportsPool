@@ -3,6 +3,7 @@
 	[Id] INT IDENTITY (1, 1) NOT NULL,
 	[TeamId] INT NOT NULL,
 	[PoolEntryId] INT NOT NULL,
+	[Year] INT NOT NULL,
 	[Round] INT NOT NULL,
 	PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_TeamPick_To_Team] FOREIGN KEY ([TeamId]) REFERENCES [app].[Team]([Id]),

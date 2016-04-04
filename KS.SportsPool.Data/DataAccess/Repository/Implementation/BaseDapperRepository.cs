@@ -103,7 +103,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         /// Returns all of the items in the data store.
         /// </summary>
         /// <returns>All of the items in the data store.</returns>
-        protected async Task<IEnumerable<K>> List<K>(string sql, object sqlParams,
+        protected async Task<IEnumerable<K>> List<K>(int year, string sql, object sqlParams,
             string cacheKey)
         {
             IEnumerable<K> items = null;
@@ -137,17 +137,17 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         /// Returns all of the items in the data store.
         /// </summary>
         /// <returns>All of the items in the data store.</returns>
-        protected async Task<IEnumerable<T>> List(string sql, object sqlParams,
+        protected async Task<IEnumerable<T>> List(int year, string sql, object sqlParams,
             string cacheKey)
         {
-            return await List<T>(sql, sqlParams, cacheKey);
+            return await List<T>(year, sql, sqlParams, cacheKey);
         }
 
         /// <summary>
         /// Returns all of the items in the data store.
         /// </summary>
         /// <returns>All of the items in the data store.</returns>
-        public async Task<IEnumerable<T>> List()
+        public async Task<IEnumerable<T>> List(int year)
         {
             if (string.IsNullOrEmpty(ListSql))
             {
@@ -155,7 +155,10 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
                     "List is not supporrted by this repository");
             }
 
-            return await List<T>(ListSql, null, CacheContainerName);
+            return await List<T>(year, ListSql, new
+            {
+                Year = year
+            }, CacheContainerName);
         }
 
 

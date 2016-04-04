@@ -86,7 +86,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
         {
             IRepositoryCollection collection = Collection();
             IAthleteRepository athleteRepository = collection.Athletes();
-            IEnumerable<Athlete> existing = athleteRepository.List().Result;
+            IEnumerable<Athlete> existing = athleteRepository.List(DateTime.Now.Year).Result;
             if (existing.Count() > 0)
             {
                 return existing;
@@ -99,6 +99,19 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             athletes.Add(new Athlete
             {
                 TeamId = teams.ElementAt(0).Id,
+                Year = DateTime.Now.Year - 1,
+                GroupName = "West Forwards 1",
+                FirstName = "Wayne",
+                LastName = "Gretzky",
+                Position = "C",
+                Goals = 91,
+                Assists = 115
+            });
+
+            athletes.Add(new Athlete
+            {
+                TeamId = teams.ElementAt(0).Id,
+                Year = DateTime.Now.Year,
                 GroupName = "West Forwards 1",
                 FirstName = "Wayne",
                 LastName = "Gretzky",
@@ -110,6 +123,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             athletes.Add(new Athlete
             {
                 TeamId = teams.ElementAt(1).Id,
+                Year = DateTime.Now.Year,
                 GroupName = "East Defence 2",
                 FirstName = "Bobby",
                 LastName = "Orr",
@@ -121,6 +135,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             athletes.Add(new Athlete
             {
                 TeamId = teams.ElementAt(2).Id,
+                Year = DateTime.Now.Year,
                 GroupName = "East Forwards 1",
                 FirstName = "Mario",
                 LastName = "Lemiuex",
@@ -132,6 +147,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             athletes.Add(new Athlete
             {
                 TeamId = teams.ElementAt(3).Id,
+                Year = DateTime.Now.Year,
                 GroupName = "West Forwards 1",
                 FirstName = "Mark",
                 LastName = "Messier",
@@ -147,7 +163,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
                     .Wait();
             }
 
-            return athletes.OrderBy(ath => ath.LastName)
+            return athletes.Where(leg => leg.Year == DateTime.Now.Year).OrderBy(ath => ath.LastName)
                 .ThenBy(ath => ath.FirstName);
         }
        
@@ -155,7 +171,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
         {
             IRepositoryCollection collection = Collection();
             ITeamRepository teamRepository = collection.Teams();
-            IEnumerable<Team> existing = teamRepository.List().Result;
+            IEnumerable<Team> existing = teamRepository.List(DateTime.Now.Year).Result;
             if (existing.Count() > 0)
             {
                 return existing;
@@ -165,6 +181,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teams.Add(new Team
             {
+                Year = DateTime.Now.Year - 1,
                 Name = "Calgary Flames",
                 Abbreviation = "CGY",
                 Conference = "West",
@@ -177,6 +194,20 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teams.Add(new Team
             {
+                Year = DateTime.Now.Year,
+                Name = "Calgary Flames",
+                Abbreviation = "CGY",
+                Conference = "West",
+                Division = "Pacific",
+                Round1 = 15,
+                Round2 = 0,
+                Round3 = 0,
+                Round4 = 0
+            });
+
+            teams.Add(new Team
+            {
+                Year = DateTime.Now.Year,
                 Name = "Vanouver Canucks",
                 Abbreviation = "VAN",
                 Conference = "West",
@@ -189,6 +220,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teams.Add(new Team
             {
+                Year = DateTime.Now.Year,
                 Name = "Washington Capitals",
                 Abbreviation = "WSH",
                 Conference = "East",
@@ -201,6 +233,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teams.Add(new Team
             {
+                Year = DateTime.Now.Year,
                 Name = "Chicago Blackhawks",
                 Abbreviation = "CHI",
                 Conference = "West",
@@ -218,14 +251,14 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
                     .Wait();
             }
 
-            return teams.OrderBy(leg => leg.Name);
+            return teams.Where(leg => leg.Year == DateTime.Now.Year).OrderBy(leg => leg.Name);
         }
 
         public static IEnumerable<PoolEntry> InsertPoolEntries()
         {            
             IRepositoryCollection collection = Collection();
             IPoolEntryRepository poolEntryRepository = collection.PoolEntries();
-            IEnumerable<PoolEntry> existing = poolEntryRepository.List().Result;
+            IEnumerable<PoolEntry> existing = poolEntryRepository.List(DateTime.Now.Year).Result;
             if (existing.Count() > 0)
             {
                 return existing;
@@ -235,6 +268,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             poolEntries.Add(new PoolEntry
             {
+                Year = DateTime.Now.Year - 1,
                 Name = "Bilbo Baggins",
                 Telephone = "18076213659",
                 Email = "kasmeltz@lakeheadu.ca",
@@ -243,6 +277,16 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             poolEntries.Add(new PoolEntry
             {
+                Year = DateTime.Now.Year,
+                Name = "Bilbo Baggins",
+                Telephone = "18076213659",
+                Email = "kasmeltz@lakeheadu.ca",
+                Score = 23
+            });
+
+            poolEntries.Add(new PoolEntry
+            {
+                Year = DateTime.Now.Year,
                 Name = "Bryan Smeltzer",
                 Telephone = null,
                 Email = null,
@@ -251,6 +295,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             poolEntries.Add(new PoolEntry
             {
+                Year = DateTime.Now.Year,
                 Name = "Darren Smeltzer",
                 Telephone = "18076213659",
                 Email = "",
@@ -259,6 +304,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             poolEntries.Add(new PoolEntry
             {
+                Year = DateTime.Now.Year,
                 Name = "Jim Bob",
                 Telephone = "",
                 Email = "p",
@@ -272,14 +318,14 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
                     .Wait();
             }
 
-            return poolEntries.OrderBy(leg => leg.Name);
+            return poolEntries.Where(leg => leg.Year == DateTime.Now.Year).OrderBy(leg => leg.Name);
         }
 
         public static IEnumerable<AthletePick> InsertAthletePicks()
         {
             IRepositoryCollection collection = Collection();
             IAthletePickRepository athletePickRepository = collection.AthletePicks();
-            IEnumerable<AthletePick> existing = athletePickRepository.List().Result;
+            IEnumerable<AthletePick> existing = athletePickRepository.List(DateTime.Now.Year).Result;
             if (existing.Count() > 0)
             {
                 return existing;
@@ -292,24 +338,35 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             athletePicks.Add(new AthletePick
             {
+                Year = DateTime.Now.Year - 1,
                 AthleteId = athletes.ElementAt(0).Id,
                 PoolEntryId = poolEntries.ElementAt(0).Id,
             });
 
             athletePicks.Add(new AthletePick
             {
+                Year = DateTime.Now.Year,
+                AthleteId = athletes.ElementAt(0).Id,
+                PoolEntryId = poolEntries.ElementAt(0).Id,
+            });
+
+            athletePicks.Add(new AthletePick
+            {
+                Year = DateTime.Now.Year,
                 AthleteId = athletes.ElementAt(2).Id,
                 PoolEntryId = poolEntries.ElementAt(0).Id,
             });
 
             athletePicks.Add(new AthletePick
             {
+                Year = DateTime.Now.Year,
                 AthleteId = athletes.ElementAt(1).Id,
                 PoolEntryId = poolEntries.ElementAt(1).Id,
             });
 
             athletePicks.Add(new AthletePick
             {
+                Year = DateTime.Now.Year,
                 AthleteId = athletes.ElementAt(3).Id,
                 PoolEntryId = poolEntries.ElementAt(2).Id,
             });
@@ -321,14 +378,14 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
                     .Wait();
             }
 
-            return athletePicks.OrderBy(leg => leg.PoolEntryId).ThenBy(leg => leg.AthleteId);
+            return athletePicks.Where(leg => leg.Year == DateTime.Now.Year).OrderBy(leg => leg.PoolEntryId).ThenBy(leg => leg.AthleteId);
         }
 
         public static IEnumerable<TeamPick> InsertTeamPicks()
         {
             IRepositoryCollection collection = Collection();
             ITeamPickRepository teamPickRepository = collection.TeamPicks();
-            IEnumerable<TeamPick> existing = teamPickRepository.List().Result;
+            IEnumerable<TeamPick> existing = teamPickRepository.List(DateTime.Now.Year).Result;
             if (existing.Count() > 0)
             {
                 return existing;
@@ -341,6 +398,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teamPicks.Add(new TeamPick
             {
+                Year = DateTime.Now.Year - 1,
                 PoolEntryId = poolEntries.ElementAt(0).Id,
                 TeamId = teams.ElementAt(0).Id,
                 Round = 1
@@ -348,6 +406,15 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teamPicks.Add(new TeamPick
             {
+                Year = DateTime.Now.Year,
+                PoolEntryId = poolEntries.ElementAt(0).Id,
+                TeamId = teams.ElementAt(0).Id,
+                Round = 1
+            });
+
+            teamPicks.Add(new TeamPick
+            {
+                Year = DateTime.Now.Year,
                 PoolEntryId = poolEntries.ElementAt(0).Id,
                 TeamId = teams.ElementAt(1).Id,
                 Round = 1
@@ -355,6 +422,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teamPicks.Add(new TeamPick
             {
+                Year = DateTime.Now.Year,
                 PoolEntryId = poolEntries.ElementAt(1).Id,
                 TeamId = teams.ElementAt(1).Id,
                 Round = 2
@@ -362,6 +430,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             teamPicks.Add(new TeamPick
             {
+                Year = DateTime.Now.Year,
                 PoolEntryId = poolEntries.ElementAt(2).Id,
                 TeamId = teams.ElementAt(3).Id,
                 Round = 3
@@ -374,7 +443,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
                     .Wait();
             }
 
-            return teamPicks.OrderBy(leg => leg.PoolEntryId).ThenBy(leg => leg.TeamId);
+            return teamPicks.Where(leg => leg.Year == DateTime.Now.Year).OrderBy(leg => leg.PoolEntryId).ThenBy(leg => leg.TeamId);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             IRepositoryCollection collection = RepositoryTestHelper.Collection();
             IAthleteRepository athleteRepository = collection.Athletes();
             IEnumerable<Athlete> insertedAthletes = RepositoryTestHelper.InsertAthletes();
-            IEnumerable<Athlete> listedAthletes = athleteRepository.List().Result;
+            IEnumerable<Athlete> listedAthletes = athleteRepository.List(DateTime.Now.Year).Result;
             IEnumerable<Team> teams = RepositoryTestHelper.InsertTeams();
 
             for (int i = 0; i < listedAthletes.Count(); i++)
@@ -84,7 +84,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             Assert.AreEqual("Orr", updatedAthlete.LastName);
 
             athleteRepository.Delete(listedAthletes.ElementAt(0).Id).Wait();
-            listedAthletes = athleteRepository.List().Result;
+            listedAthletes = athleteRepository.List(DateTime.Now.Year).Result;
             Assert.AreEqual(3, listedAthletes.Count());
 
             IEnumerable<Athlete> searched = athleteRepository.Search("Mario").Result;
@@ -94,6 +94,9 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             searched = athleteRepository.Search("Lemiuex").Result;            
             Assert.AreEqual(1, searched.Count());
             Assert.AreEqual("Mario", searched.ElementAt(0).FirstName);
+
+            listedAthletes = athleteRepository.List(2012).Result;
+            Assert.AreEqual(0, listedAthletes.Count());
         }
     }
 }

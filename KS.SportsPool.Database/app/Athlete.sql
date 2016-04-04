@@ -2,6 +2,7 @@
 (
 	[Id] INT IDENTITY (1, 1) NOT NULL,
 	[TeamId] INT NOT NULL,
+	[Year] INT NOT NULL,
 	[GroupName] VARCHAR(30) NULL,
 	[FirstName] VARCHAR(30) NULL,
 	[LastName] VARCHAR(30) NULL,

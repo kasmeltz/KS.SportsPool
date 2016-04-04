@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [app].[Team]
 (
 	[Id] INT IDENTITY (1, 1) NOT NULL,
+	[Year] INT NOT NULL,
 	[Name] VARCHAR(50) NULL,
 	[Abbreviation] VARCHAR(5) NULL,
 	[Position] VARCHAR(5) NULL,

@@ -312,6 +312,7 @@
     <Content Include="Views\Admin\Athletes.cshtml" />
     <Content Include="Views\Admin\TeamList.cshtml" />
     <Content Include="Views\Admin\AthleteList.cshtml" />
+    <Content Include="Views\Admin\TeamGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

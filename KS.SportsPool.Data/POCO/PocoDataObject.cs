@@ -3,5 +3,6 @@
     public class PocoDataObject
     {
         public int Id { get; set; }
+        public int Year { get; set; }
     }
 }

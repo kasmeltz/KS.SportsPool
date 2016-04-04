@@ -32,7 +32,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
+                Id, Year, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
             FROM 
                 [app].[Team]
             WHERE
@@ -41,16 +41,18 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
+                Id, Year, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
             FROM 
                 [app].[Team]
+            WHERE
+                Year = @Year
             ORDER BY
                 Name";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
+                Id, Year, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
             FROM 
                 [app].[Team]
             WHERE           
@@ -69,13 +71,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        [app].[Team]
 	        WHERE	
 		        Name = @Name
+            AND
+                Year = @Year
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
 		        INSERT INTO [app].[Team]
-		        (Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4)
+		        (Year, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4)
 		        VALUES
-                (@Name, @Abbreviation, @Conference, @Division, @Round1, @Round2, @Round3, @Round4)
+                (@Year, @Name, @Abbreviation, @Conference, @Division, @Round1, @Round2, @Round3, @Round4)
 		        
 		        SELECT TOP 1 
 			        Id
@@ -83,6 +87,8 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		            [app].[Team]
 	            WHERE	
 		            Name = @Name
+                AND
+                    Year = @Year
             END
 	        ELSE
 	        BEGIN
@@ -100,12 +106,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        [app].[Team]
 	        WHERE	
 		        Name = @Name
+            AND
+                Year = @Year
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
                     [app].[Team]
                 SET
+                    Year = @Year,
                     Name = @Name,
                     Abbreviation = @Abbreviation,
                     Conference = @Conference,

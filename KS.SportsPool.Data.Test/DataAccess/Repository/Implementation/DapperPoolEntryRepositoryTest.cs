@@ -25,7 +25,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             IRepositoryCollection collection = RepositoryTestHelper.Collection();
             IPoolEntryRepository poolEntryRepository = collection.PoolEntries();
             IEnumerable<PoolEntry> insertedPoolEntrys = RepositoryTestHelper.InsertPoolEntries();
-            IEnumerable<PoolEntry> listedPoolEntrys = poolEntryRepository.List().Result;
+            IEnumerable<PoolEntry> listedPoolEntrys = poolEntryRepository.List(DateTime.Now.Year).Result;
 
             for (int i = 0; i < listedPoolEntrys.Count(); i++)
             {
@@ -75,12 +75,15 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             Assert.AreEqual("Jim Bob", updatedPoolEntry.Name);
             
             poolEntryRepository.Delete(listedPoolEntrys.ElementAt(0).Id).Wait();
-            listedPoolEntrys = poolEntryRepository.List().Result;
+            listedPoolEntrys = poolEntryRepository.List(DateTime.Now.Year).Result;
             Assert.AreEqual(3, listedPoolEntrys.Count());
 
             IEnumerable<PoolEntry> searched = poolEntryRepository.Search("meltz").Result;
             Assert.AreEqual(1, searched.Count());
             Assert.AreEqual("Bryan Smeltzer", searched.ElementAt(0).Name);
+
+            listedPoolEntrys = poolEntryRepository.List(2012).Result;
+            Assert.AreEqual(0, listedPoolEntrys.Count());
         }
     }
 }

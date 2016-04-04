@@ -32,7 +32,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, Name, Telephone, Email, Score
+                Id, Year, Name, Telephone, Email, Score
             FROM 
                 [app].[PoolEntry]
             WHERE
@@ -41,16 +41,18 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Telephone, Email, Score
+                Id, Year, Name, Telephone, Email, Score
             FROM 
                 [app].[PoolEntry]
+            WHERE
+                Year = @Year
             ORDER BY
                 Name";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Telephone, Email, Score
+                Id, Year, Name, Telephone, Email, Score
             FROM 
                 [app].[PoolEntry]
             WHERE           
@@ -69,13 +71,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        [app].[PoolEntry]
 	        WHERE	
 		        Name = @Name
+            AND
+                Year = @Year
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
 		        INSERT INTO [app].[PoolEntry]
-		        (Name, Telephone, Email, Score)
+		        (Year, Name, Telephone, Email, Score)
 		        VALUES
-                (@Name, @Telephone, @Email, @Score)
+                (@Year, @Name, @Telephone, @Email, @Score)
 		        
 		        SELECT TOP 1 
 			        Id
@@ -83,6 +87,8 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		            [app].[PoolEntry]
 	            WHERE	
 		            Name = @Name
+                AND
+                    Year = @Year
             END
 	        ELSE
 	        BEGIN
@@ -100,12 +106,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        [app].[PoolEntry]
 	        WHERE	
 		        Name = @Name
+            AND
+                Year = @Year
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
                     [app].[PoolEntry]
                 SET
+                    Year = @Year,
                     Name = @Name,
                     Telephone = @Telephone,
                     Email = @Email,

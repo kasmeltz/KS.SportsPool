@@ -25,7 +25,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             IRepositoryCollection collection = RepositoryTestHelper.Collection();
             ITeamRepository teamRepository = collection.Teams();
             IEnumerable<Team> insertedTeams = RepositoryTestHelper.InsertTeams();
-            IEnumerable<Team> listedTeams = teamRepository.List().Result;
+            IEnumerable<Team> listedTeams = teamRepository.List(DateTime.Now.Year).Result;
 
             for (int i = 0; i < listedTeams.Count(); i++)
             {
@@ -83,12 +83,15 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             Assert.AreEqual("Washington Capitals", updatedTeam.Name);
             
             teamRepository.Delete(listedTeams.ElementAt(0).Id).Wait();
-            listedTeams = teamRepository.List().Result;
+            listedTeams = teamRepository.List(DateTime.Now.Year).Result;
             Assert.AreEqual(3, listedTeams.Count());
 
             IEnumerable<Team> searched = teamRepository.Search("hawk").Result;
             Assert.AreEqual(1, searched.Count());
             Assert.AreEqual("Chicago Blackhawks", searched.ElementAt(0).Name);
+
+            listedTeams = teamRepository.List(2012).Result;
+            Assert.AreEqual(0, listedTeams.Count());
         }
     }
 }
