@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/KS.SportsPool/v14/.suo
+/KS.SportsPool.Component/bin/Debug
+/KS.SportsPool.Component/obj/Debug
+/KS.SportsPool.Data/bin/Debug
+/KS.SportsPool.Data/obj/Debug
+/KS.SportsPool.Data.Test/bin/Debug
+/KS.SportsPool.Data.Test/obj/Debug
+/KS.SportsPool.Database/bin/Debug
+/KS.SportsPool.Database/obj/Debug
+/KS.SportsPool.MVC/bin
+/KS.SportsPool.MVC/obj
