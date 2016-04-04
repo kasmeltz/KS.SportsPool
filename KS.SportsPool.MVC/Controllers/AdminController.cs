@@ -3,15 +3,9 @@ using System.Web.Mvc;
 
 namespace KS.SportsPool.MVC.Controllers
 {
-    public class HomeController : Controller
+    public class AdminController : Controller
     {
         public ActionResult Index()
-        {
-            ViewBag.Title = UIUtilities.SiteTitle;
-            return View();
-        }
-
-        public ActionResult Pools()
         {
             ViewBag.Title = UIUtilities.SiteTitle;
             return View();
