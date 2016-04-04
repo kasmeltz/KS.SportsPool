@@ -3,7 +3,7 @@
 
 @{
     string imgSrc = Model.Abbreviation.ToUpper() + "_100.png";
-    using (Html.BeginForm("UpdateTeam", "Admin", null, FormMethod.Post, new { @class = "tr" }))
+    using (Html.BeginForm("UpdateTeam", "Admin", null, FormMethod.Post, new { @class = "tr", id = "TeamDiv" + Model.Id }))
     {
         @Html.Hidden("Id", Model.Id)
         @Html.Hidden("Year", Model.Year)

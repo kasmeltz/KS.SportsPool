@@ -15,10 +15,13 @@ namespace KS.SportsPool.MVC.Controllers
             ViewBag.Title = UIUtilities.SiteTitle;
             return View();
         }
-       
+
         public async Task<ActionResult> Teams()
         {
             ViewBag.Title = UIUtilities.SiteTitle;
+            ViewBag.Success = TempData["Success"];
+            ViewBag.Error = TempData["Error"];
+            ViewBag.ScrollSection = TempData["ScrollSection"];
 
             IEnumerable<Team> teams = await Repository
                 .Teams()
@@ -29,75 +32,52 @@ namespace KS.SportsPool.MVC.Controllers
 
         public async Task<ActionResult> DeleteTeam(int id)
         {
-            IEnumerable<Team> teams = null;
-
             try
             {
                 await Repository.Teams().Delete(id);
-                teams = await Repository
-                    .Teams()
-                    .List(DateTime.Now.Year);
-                @ViewBag.Success = "The team was deleted successfully!";
-                return View("Teams", teams);
+                TempData["Success"] = "The team was deleted successfully!";
+                return RedirectToAction("Teams");
             }
             catch (Exception ex)
             {
-                teams = await Repository
-                    .Teams()
-                    .List(DateTime.Now.Year);
-                @ViewBag.Error = "There was an error deleting the team!";
-                return View("Teams", teams);
+                TempData["Error"] = "There was an error deleting the team!";
+                return RedirectToAction("Teams");
             }
         }
 
         [HttpPost]
         public async Task<ActionResult> AddTeam(Team teamToAdd)
         {
-            IEnumerable<Team> teams = null;
-
             try
             {
                 teamToAdd.Year = DateTime.Now.Year;
                 await Repository.Teams().Insert(teamToAdd);
-                teams = await Repository
-                    .Teams()
-                    .List(DateTime.Now.Year);
-                @ViewBag.Success = "The team was added successfully!";
-                return View("Teams", teams);
+                TempData["Success"] = "The team '" + teamToAdd.Name + "' was added successfully!";
+                return RedirectToAction("Teams");
             }
             catch (Exception ex)
             {
-                teams = await Repository
-                    .Teams()
-                    .List(DateTime.Now.Year);
-                @ViewBag.Error = "There was an error adding the team!";
-                return View("Teams", teams);
+                TempData["Error"] = "There was an error adding the team '" + teamToAdd.Name + "'!";
+                return RedirectToAction("Teams");
             }
         }
 
         [HttpPost]
         public async Task<ActionResult> UpdateTeam(Team teamToUpdate)
         {
-            IEnumerable<Team> teams = null;
-
             try
             {
                 teamToUpdate.Year = DateTime.Now.Year;
                 await Repository.Teams().Update(teamToUpdate);
-                @ViewBag.Success = "The team was updated successfully!";
-                teams = await Repository
-                    .Teams()
-                    .List(DateTime.Now.Year);
-                return View("Teams", teams);
+                TempData["Success"] = "The team '" + teamToUpdate.Name + "' was updated successfully!";
+                TempData["ScrollSection"] = "TeamDiv" + teamToUpdate.Id;
+                return RedirectToAction("Teams");
             }
             catch (Exception ex)
             {
-                @ViewBag.Error = "There was an error updating the team!";
-                await Repository.Teams().Update(teamToUpdate);
-                teams = await Repository
-                    .Teams()
-                    .List(DateTime.Now.Year);
-                return View("Teams", teams);                
+                TempData["Error"] = "There was an error updating the team '" + teamToUpdate.Name + "'!";
+                TempData["ScrollSection"] = "TeamDiv" + teamToUpdate.Id;
+                return RedirectToAction("Teams");
             }
         }
 
@@ -123,7 +103,7 @@ namespace KS.SportsPool.MVC.Controllers
             IEnumerable<Team> teams = await Repository
                 .Teams()
                 .List(DateTime.Now.Year);
-                            
+
             IEnumerable<Athlete> athletes = null;
 
             try

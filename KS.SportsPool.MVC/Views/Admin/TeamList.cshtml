@@ -5,13 +5,6 @@
     var conferences = Model.GroupBy(te => te.Conference);
 }
 
-<p id="errorMessage" style="color: #ff0000; font-size:large;">
-    @ViewBag.Error
-</p>
-<p id="successMessage" style="color: #00ff00; font-size:large;">
-    @ViewBag.Success
-</p>
-
 @{
     foreach(var conference in conferences)
     {
