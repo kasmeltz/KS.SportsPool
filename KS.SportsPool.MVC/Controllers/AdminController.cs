@@ -157,19 +157,11 @@ namespace KS.SportsPool.MVC.Controllers
             ViewBag.Error = TempData["Error"];
             ViewBag.ScrollSection = TempData["ScrollSection"];
 
-            IEnumerable<Team> teams = await Repository
-                .Teams()
-                .List(DateTime.Now.Year);
-
-            IEnumerable<Athlete> athletes = await Repository
-               .Athletes()
-               .List(DateTime.Now.Year);
-
             IEnumerable<PoolEntry> pools = await Repository
                 .PoolEntries()
                 .List(DateTime.Now.Year);
 
-            return View(new PoolListViewModel { Athletes = athletes, Teams = teams, Entries = pools });
+            return View(pools);
         }
 
         public async Task<ActionResult> DeletePool(int id)
@@ -222,6 +214,43 @@ namespace KS.SportsPool.MVC.Controllers
                 TempData["ScrollSection"] = "PoolDiv" + poolToUpdate.Id;
                 return RedirectToAction("Pools");
             }
+        }
+
+        public async Task<ActionResult> PoolDetails(int id)
+        {
+            PoolEntry entry = await Repository
+                .PoolEntries()
+                .Get(id);
+
+            IEnumerable<Team> teams = await Repository
+                .Teams()
+                .List(DateTime.Now.Year);
+
+            IEnumerable<Athlete> athletes = await Repository
+               .Athletes()
+               .List(DateTime.Now.Year);
+
+            IEnumerable<AthletePick> athletePicks = await Repository
+                .AthletePicks()
+                .ListForEntry(id);
+
+            IEnumerable<TeamPick> teamPicks = await Repository
+               .TeamPicks()
+               .ListForEntry(id);
+
+            return View(new PoolViewModel
+            {
+                Entry = entry,
+                Athletes = athletes,
+                Teams = teams,
+                AthletePicks = athletePicks,
+                TeamPicks = teamPicks,
+            });
+        }
+
+        public async Task<ActionResult> UpdateScores()
+        {
+            return RedirectToAction("Pools");
         }
     }
 }

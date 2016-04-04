@@ -1,6 +1,8 @@
 ﻿using KS.SportsPool.Component.Caching.Interface;
 using KS.SportsPool.Data.DataAccess.Repository.Interface;
 using KS.SportsPool.Data.POCO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 {
@@ -26,6 +28,23 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             ListSql = _listSql;
             InsertSql = _insertSql;
             UpdateSql = _updateSql;
+        }
+
+        private const string _forEntry = @"
+             SET NOCOUNT ON;
+            SELECT  
+                Id, TeamId, PoolEntryId, Year, Round
+            FROM 
+                [app].[TeamPick]
+            WHERE
+                PoolEntryId = @EntryId";
+
+        public async Task<IEnumerable<TeamPick>> ListForEntry(int id)
+        {
+            return await List(0, _forEntry, new
+            {
+                EntryId = id,
+            }, "TeamForEntry" + id);
         }
 
         private const string _getSql = @"

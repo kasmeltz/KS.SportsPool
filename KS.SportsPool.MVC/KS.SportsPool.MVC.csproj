@@ -171,8 +171,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\PoolViewModel.cs" />
-    <Compile Include="Models\PoolListViewModel.cs" />
+    <Compile Include="Models\PoolDetailViewModel.cs" />
     <Compile Include="Models\AthleteViewModel.cs" />
     <Compile Include="Models\AthleteListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -319,6 +318,7 @@
     <Content Include="Views\Admin\AthleteGrid.cshtml" />
     <Content Include="Views\Admin\PoolList.cshtml" />
     <Content Include="Views\Admin\PoolGrid.cshtml" />
+    <Content Include="Views\Admin\PoolDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

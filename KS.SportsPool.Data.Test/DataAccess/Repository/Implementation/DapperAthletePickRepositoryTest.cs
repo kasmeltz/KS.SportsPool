@@ -81,6 +81,9 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 
             listedAthletePicks = athletePickRepository.List(2012).Result;
             Assert.AreEqual(0, listedAthletePicks.Count());
+
+            listedAthletePicks = athletePickRepository.ListForEntry(poolEntries.ElementAt(0).Id).Result;
+            Assert.AreEqual(2, listedAthletePicks.Count());
         }
     }
 }

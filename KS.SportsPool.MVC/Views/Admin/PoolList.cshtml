@@ -1,7 +1,6 @@
-﻿@using KS.SportsPool.MVC.Models;
-@using KS.SportsPool.Data.POCO;
-@model PoolListViewModel
-    
+﻿@using KS.SportsPool.Data.POCO;
+@model IEnumerable<PoolEntry>
+
 @{
     <div class="table">
         <div class="tr">
@@ -10,10 +9,11 @@
             <span class="td">Telephone</span>
             <span class="td">Email</span>
             <span class="td">Score</span>
+            <span class="td">&nbsp;</span>
         </div>
-        @foreach (PoolEntry entry in Model.Entries)
+        @foreach (PoolEntry entry in Model)
         {
-            Html.RenderPartial("PoolGrid", new PoolViewModel { Athletes = Model.Athletes, Teams = Model.Teams, Entry = entry });
+            Html.RenderPartial("PoolGrid", entry);
         }
     </div>
-}     
+}

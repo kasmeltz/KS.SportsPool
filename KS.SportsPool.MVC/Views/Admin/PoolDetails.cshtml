@@ -1,5 +1,6 @@
-﻿@using KS.SportsPool.Data.POCO;
-@model IEnumerable<PoolEntry>
+﻿@using KS.SportsPool.MVC.Models;
+@using KS.SportsPool.Data.POCO;
+@model PoolViewModel
 
 <div style="position: fixed; text-align: center; background:#dddddd; padding: 5px; bottom:0px; left:0px; width:100%; border: 1px solid black;">
     <p id="errorMessage" style="color: #ff0000; font-size:large;">
@@ -15,8 +16,8 @@
     <a href="/Admin/Pools" class="btn btn-primary">Pools</a>
     <a href="/Admin/Athletes" class="btn btn-primary">Athletes</a>
     <a href="/Admin/Teams" class="btn btn-primary">Teams</a>
-    <h1>Pool</h1>
-    <div style="border: 1px solid #000000; padding: 5px;">
+    <h1>@Model.Entry.Name</h1>
+    @*<div style="border: 1px solid #000000; padding: 5px;">
         @using (Html.BeginForm("AddPool", "Admin", null, FormMethod.Post))
         {
             <p>
@@ -39,15 +40,5 @@
     <div id="teamList">
         @{Html.RenderPartial(@"PoolList", Model);}
     </div>
+       *@
 </div>
-
-@section scripts {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var anchor = document.getElementById('@ViewBag.ScrollSection');
-            if (anchor) {
-                anchor.scrollIntoView(true);
-            }
-        });
-    </script>
-}
