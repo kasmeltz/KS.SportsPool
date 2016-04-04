@@ -3,17 +3,12 @@
 
 @{
     string imgSrc = Model.Abbreviation.ToUpper() + "_100.png";
-    <div class="tr">
-        <span class="td" id="teamMessage@{ WriteLiteral(Model.Id); }" style="color: #ff0000; font-size:large;"></span>
-    </div>
-    using (Ajax.BeginForm("UpdateTeam", new AjaxOptions
-        {
-            HttpMethod = "Post",
-            LoadingElementId = "loadingSymbol",
-            UpdateTargetId = "teamMessage" + Model.Id
-        }, null, new { @class = "tr" }))
+    using (Html.BeginForm("UpdateTeam", "Admin", null, FormMethod.Post, new { @class = "tr" }))
     {
         @Html.Hidden("Id", Model.Id)
+        @Html.Hidden("Year", Model.Year)
+        @Html.Hidden("Conference", Model.Conference)
+        @Html.Hidden("Division", Model.Division)
         <span class="td">
             <img style="max-height: 100px; max-width: 100px;" src="~/Images/Teams/@imgSrc" />
             <button type="submit" class="btn btn-primary">Save Team</button>

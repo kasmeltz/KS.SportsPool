@@ -15,22 +15,7 @@ namespace KS.SportsPool.MVC.Controllers
             ViewBag.Title = UIUtilities.SiteTitle;
             return View();
         }
-
-        public async Task<ActionResult> Athletes()
-        {
-            ViewBag.Title = UIUtilities.SiteTitle;
-
-            IEnumerable<Team> teams = await Repository
-                .Teams()
-                .List(DateTime.Now.Year);
-
-            IEnumerable<Athlete> athletes = await Repository
-               .Athletes()
-               .List(DateTime.Now.Year);
-
-            return View(new AthleteListViewModel { Athletes = athletes, Teams = teams });
-        }
-
+       
         public async Task<ActionResult> Teams()
         {
             ViewBag.Title = UIUtilities.SiteTitle;
@@ -75,10 +60,10 @@ namespace KS.SportsPool.MVC.Controllers
                 teamToAdd.Year = DateTime.Now.Year;
                 await Repository.Teams().Insert(teamToAdd);
                 teams = await Repository
-                           .Teams()
-                           .List(DateTime.Now.Year);
+                    .Teams()
+                    .List(DateTime.Now.Year);
                 @ViewBag.Success = "The team was added successfully!";
-                return PartialView("TeamList", teams);
+                return View("Teams", teams);
             }
             catch (Exception ex)
             {
@@ -86,24 +71,51 @@ namespace KS.SportsPool.MVC.Controllers
                     .Teams()
                     .List(DateTime.Now.Year);
                 @ViewBag.Error = "There was an error adding the team!";
-                return PartialView("TeamList", teams);
+                return View("Teams", teams);
             }
         }
 
         [HttpPost]
         public async Task<ActionResult> UpdateTeam(Team teamToUpdate)
         {
+            IEnumerable<Team> teams = null;
+
             try
             {
                 teamToUpdate.Year = DateTime.Now.Year;
                 await Repository.Teams().Update(teamToUpdate);
-                return Content("The team was saved successfully!");
+                @ViewBag.Success = "The team was updated successfully!";
+                teams = await Repository
+                    .Teams()
+                    .List(DateTime.Now.Year);
+                return View("Teams", teams);
             }
             catch (Exception ex)
             {
-                return Content("There was an error updating the team!");
+                @ViewBag.Error = "There was an error updating the team!";
+                await Repository.Teams().Update(teamToUpdate);
+                teams = await Repository
+                    .Teams()
+                    .List(DateTime.Now.Year);
+                return View("Teams", teams);                
             }
         }
+
+        public async Task<ActionResult> Athletes()
+        {
+            ViewBag.Title = UIUtilities.SiteTitle;
+
+            IEnumerable<Team> teams = await Repository
+                .Teams()
+                .List(DateTime.Now.Year);
+
+            IEnumerable<Athlete> athletes = await Repository
+               .Athletes()
+               .List(DateTime.Now.Year);
+
+            return View(new AthleteListViewModel { Athletes = athletes, Teams = teams });
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> AddAthlete(Athlete athleteToAdd)
@@ -127,7 +139,7 @@ namespace KS.SportsPool.MVC.Controllers
             catch (Exception ex)
             {
                 athletes = await Repository
-                   .Athletes()
+                    .Athletes()
                     .List(DateTime.Now.Year);
                 @ViewBag.Error = "There was an error adding the athlete!";
                 return PartialView("AthleteList", new AthleteListViewModel { Athletes = athletes, Teams = teams });

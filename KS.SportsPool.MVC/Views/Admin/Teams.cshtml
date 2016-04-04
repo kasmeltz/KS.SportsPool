@@ -7,7 +7,7 @@
     <a href="/Admin/Teams" class="btn btn-primary">Teams</a>
     <h1>Teams</h1>
     <div style="border: 1px solid #000000; padding: 5px;">
-        @using (Ajax.BeginForm("AddTeam", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "teamList", LoadingElementId = "loadingSymbol" }))
+        @using (Html.BeginForm("AddTeam", "Admin", null, FormMethod.Post))
         {
             <p>
                 @Html.Label("Name")
@@ -30,8 +30,6 @@
             <button type="submit" class="btn btn-primary">Add Team</button>
         }
     </div>
-    
-    <div id="loadingSymbol" style="display: none;">LOADING PLEASE WAIT...</div>
     
     <div id="teamList">
         @{Html.RenderPartial(@"TeamList", Model);}
