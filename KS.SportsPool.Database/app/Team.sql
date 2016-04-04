@@ -4,7 +4,6 @@
 	[Year] INT NOT NULL,
 	[Name] VARCHAR(50) NULL,
 	[Abbreviation] VARCHAR(5) NULL,
-	[Position] VARCHAR(5) NULL,
 	[Conference] VARCHAR(25) NULL,
 	[Division] VARCHAR(25) NULL,
 	[Round1] INT NULL,
