@@ -48,9 +48,11 @@
     <Compile Include="DataAccess\Existing\ActionNotSupportedException.cs" />
     <Compile Include="DataAccess\Existing\ItemAlreadyExistsException.cs" />
     <Compile Include="DataAccess\Repository\Implementation\BaseDapperRepository.cs" />
+    <Compile Include="DataAccess\Repository\Implementation\DapperPoolEntryRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperTeamRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperAthleteRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\SqlConnectionManager.cs" />
+    <Compile Include="DataAccess\Repository\Interface\IPoolEntryRepository.cs" />
     <Compile Include="DataAccess\Repository\Interface\ITeamRepository.cs" />
     <Compile Include="DataAccess\Repository\Interface\IAthleteRepository.cs" />
     <Compile Include="DataAccess\Repository\Interface\IDataRepository.cs" />

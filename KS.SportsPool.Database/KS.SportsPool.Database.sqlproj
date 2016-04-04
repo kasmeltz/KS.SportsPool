@@ -63,6 +63,9 @@
     <Build Include="app.sql" />
     <Build Include="app\Athlete.sql" />
     <Build Include="app\Team.sql" />
+    <Build Include="app\PoolEntry.sql" />
+    <Build Include="app\AthletePick.sql" />
+    <Build Include="app\TeamPick.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="KS.SportsPool.Database_LOCAL.publish.xml" />

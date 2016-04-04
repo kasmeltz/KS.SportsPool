@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Athlete]
+﻿CREATE TABLE [app].[Athlete]
 (
 	[Id] INT IDENTITY (1, 1) NOT NULL,
 	[FirstName] VARCHAR(30) NULL,

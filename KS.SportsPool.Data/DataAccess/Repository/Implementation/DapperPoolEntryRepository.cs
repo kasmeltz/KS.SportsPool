@@ -5,18 +5,18 @@ using KS.SportsPool.Data.POCO;
 namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 {
     /// <summary>
-    /// Provides access to Team data in the data store using the Dapper framework.
+    /// Provides access to PoolEntry data in the data store using the Dapper framework.
     /// 
     /// Dapper documentation at https://github.com/StackExchange/dapper-dot-net
     /// </summary>
-    public class DapperTeamRepository : BaseDapperRepository<Team>,
-        ITeamRepository
+    public class DapperPoolEntryRepository : BaseDapperRepository<PoolEntry>,
+        IPoolEntryRepository
     {    
-        public DapperTeamRepository(ICacheProvider cacheProvider)
+        public DapperPoolEntryRepository(ICacheProvider cacheProvider)
             : base(cacheProvider)
         {
-            CacheContainerName = "Team";
-            TableName = "[mlist].[Team]";
+            CacheContainerName = "PoolEntry";
+            TableName = "[mlist].[PoolEntry]";
             CacheSeconds = 0;
         }
 
@@ -32,27 +32,27 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
+                Id, Name, Telephone, Email
             FROM 
-                [mlist].[Team]
+                [mlist].[PoolEntry]
             WHERE
                 Id = @Id";
 
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
+                Id, Name, Telephone, Email
             FROM 
-                [mlist].[Team]
+                [mlist].[PoolEntry]
             ORDER BY
                 Name";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
+                Id, Name, Telephone, Email
             FROM 
-                [mlist].[Team]
+                [mlist].[PoolEntry]
             WHERE           
                 Name like @SearchTerms
             ORDER BY
@@ -66,21 +66,21 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[Team]
+		        [mlist].[PoolEntry]
 	        WHERE	
 		        Name = @Name
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [mlist].[Team]
-		        (Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4)
+		        INSERT INTO [mlist].[PoolEntry]
+		        (Name, Telephone, Email)
 		        VALUES
-                (@Name, @Abbreviation, @Conference, @Division, @Round1, @Round2, @Round3, @Round4)
+                (@Name, @Telephone, @Email)
 		        
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [mlist].[Team]
+		            [mlist].[PoolEntry]
 	            WHERE	
 		            Name = @Name
             END
@@ -97,23 +97,18 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[Team]
+		        [mlist].[PoolEntry]
 	        WHERE	
 		        Name = @Name
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [mlist].[Team]
+                    [mlist].[PoolEntry]
                 SET
                     Name = @Name,
-                    Abbreviation = @Abbreviation,
-                    Conference = @Conference,
-                    Division = @Division,
-                    Round1 = @Round1,
-                    Round2 = @Round2,
-                    Round3 = @Round3,
-                    Round4 = @Round4
+                    Telephone = @Telephone,
+                    Email = @Email
 		        WHERE	
 		            Id = @Id
                     
