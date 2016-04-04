@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
+namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 {
     /// <summary>
     /// Unit Tests for the DapperAthleteRepository

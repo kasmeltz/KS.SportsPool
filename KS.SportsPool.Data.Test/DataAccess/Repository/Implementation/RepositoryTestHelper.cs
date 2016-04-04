@@ -1,15 +1,15 @@
-﻿using KS.GuessAthlete.Component.Caching.Implementation;
-using KS.GuessAthlete.Component.Caching.Interface;
-using KS.GuessAthlete.Data.DataAccess.Repository.Implementation;
-using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
-using KS.GuessAthlete.Data.POCO;
+﻿using KS.SportsPool.Component.Caching.Implementation;
+using KS.SportsPool.Component.Caching.Interface;
+using KS.SportsPool.Data.DataAccess.Repository.Implementation;
+using KS.SportsPool.Data.DataAccess.Repository.Interface;
+using KS.SportsPool.Data.POCO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
+namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
 {
     public class RepositoryTestHelper
     {
@@ -29,29 +29,17 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
         {
             IRepositoryCollection collection = Collection();
 
-            IAthleteAwardRepository AthleteAwards = collection.AthleteAwards();
+            IAthletePickRepository AthletePicks = collection.AthletePicks();
             IAthleteRepository Athletes = collection.Athletes();
-            IAwardRepository Awards = collection.Awards();
-            IDraftRepository Drafts = collection.Drafts();
-            IGoalieStatLineRepository GoalieStatLines = collection.GoalieStatLines();
-            IJerseyNumberRepository JerseyNumbers = collection.JerseyNumbers();
-            ILeagueRepository Leagues = collection.Leagues();
-            ISeasonRepository Seasons = collection.Seasons();
-            ISkaterStatLineRepository SkaterStatLines = collection.SkaterStatLines();
+            IPoolEntryRepository PoolEntries = collection.PoolEntries();
+            ITeamPickRepository TeamPicks = collection.TeamPicks();
             ITeamRepository Teams = collection.Teams();
-            ITeamIdentityRepository TeamIdentities = collection.TeamIdentities();
 
-            GoalieStatLines.PurgeForTest().Wait();
-            SkaterStatLines.PurgeForTest().Wait();
-            AthleteAwards.PurgeForTest().Wait();
-            Drafts.PurgeForTest().Wait();
-            JerseyNumbers.PurgeForTest().Wait();
-            Awards.PurgeForTest().Wait();
+            AthletePicks.PurgeForTest().Wait();
             Athletes.PurgeForTest().Wait();
-            TeamIdentities.PurgeForTest().Wait();
+            PoolEntries.PurgeForTest().Wait();
+            TeamPicks.PurgeForTest().Wait();
             Teams.PurgeForTest().Wait();
-            Seasons.PurgeForTest().Wait();
-            Leagues.PurgeForTest().Wait();
         }
 
 
@@ -93,53 +81,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 Assert.AreEqual(v1, v2, prop.Name);
             }
         }
-
-        public static IEnumerable<League> InsertLeagues()
-        {
-            IRepositoryCollection collection = Collection();
-            ILeagueRepository leagueRepository = collection.Leagues();
-            IEnumerable<League> existing = leagueRepository.List().Result;
-            if (existing.Count() > 0)
-            {
-                return existing;
-            }
-
-            List<League> leagues = new List<League>();
-
-            leagues.Add(new League
-            {
-                Name = "National Hockey League",
-                Abbreviation = "NHL",
-            });
-
-            leagues.Add(new League
-            {
-                Name = "Major League Baseball",
-                Abbreviation = "MLB",
-            });
-
-            leagues.Add(new League
-            {
-                Name = "National Basketball Association",
-                Abbreviation = "NBA",
-            });
-
-            leagues.Add(new League
-            {
-                Name = "National Football League",
-                Abbreviation = "NFL",
-            });
-
-            foreach (League league in leagues)
-            {
-                leagueRepository
-                    .Insert(league)
-                    .Wait();
-            }
-
-            return leagues.OrderBy(leg => leg.Name);
-        }
-
+        
         public static IEnumerable<Athlete> InsertAthletes()
         {
             IRepositoryCollection collection = Collection();
@@ -205,124 +147,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
 
             return athletes.OrderBy(ath => ath.Name);
         }
-
-        public static IEnumerable<Award> InsertAwards()
-        {
-            IRepositoryCollection collection = Collection();
-            IAwardRepository awardRepository = collection.Awards();
-            IEnumerable<Award> existing = awardRepository.List().Result;
-            if (existing.Count() > 0)
-            {
-                return existing;
-            }
-
-            IEnumerable<League> leagues = InsertLeagues();
-
-            List<Award> awards = new List<Award>();
-
-            awards.Add(new Award
-            {
-                LeagueId = leagues.ElementAt(0).Id,
-                Name = "Maurice Award",
-                Abbreviation = "Maurice",
-                StartDate = new DateTime(1990, 1, 1),
-                EndDate = new DateTime(2015, 4, 5)
-            });
-
-            awards.Add(new Award
-            {
-                LeagueId = leagues.ElementAt(1).Id,
-                Name = "Good Stuff Award",
-                Abbreviation = "Stuff",
-                StartDate = new DateTime(1930, 1, 1)
-            });
-
-            awards.Add(new Award
-            {
-                LeagueId = leagues.ElementAt(2).Id,
-                Name = "Eat lots award",
-                Abbreviation = "Eat",
-                StartDate = new DateTime(1974, 1, 1)
-            });
-
-            awards.Add(new Award
-            {
-                LeagueId = leagues.ElementAt(3).Id,
-                Name = "Memorial Tribute",
-                Abbreviation = "memorial",
-                StartDate = new DateTime(1945, 1, 1)
-            });
-
-            foreach (Award award in awards)
-            {
-                awardRepository
-                    .Insert(award)
-                    .Wait();
-            }
-
-            return awards.OrderBy(leg => leg.Name);
-        }
-
-        public static IEnumerable<Season> InsertSeasons()
-        {
-            IRepositoryCollection collection = Collection();
-            ISeasonRepository seasonRepository = collection.Seasons();
-            IEnumerable<Season> existing = seasonRepository.List().Result;
-            if (existing.Count() > 0)
-            {
-                return existing;
-            }
-
-            IEnumerable<League> leagues = InsertLeagues();
-
-            List<Season> seasons = new List<Season>();
-
-            seasons.Add(new Season
-            {
-                LeagueId = leagues.ElementAt(0).Id,
-                Name = "2004-2005 NHL Regular Season",
-                StartDate = new DateTime(2004, 09, 01),
-                EndDate = new DateTime(2005, 04, 10),
-                IsPlayoffs = 0
-            });
-
-            seasons.Add(new Season
-            {
-                LeagueId = leagues.ElementAt(0).Id,
-                Name = "2004-2005 NHL Playoffs",
-                StartDate = new DateTime(2004, 04, 13),
-                EndDate = new DateTime(2005, 06, 02),
-                IsPlayoffs = 1
-            });
-
-            seasons.Add(new Season
-            {
-                LeagueId = leagues.ElementAt(1).Id,
-                Name = "2014-2015 NFL Regular Season",
-                StartDate = new DateTime(2014, 09, 10),
-                EndDate = new DateTime(2015, 04, 13),
-                IsPlayoffs = 0
-            });
-
-            seasons.Add(new Season
-            {
-                LeagueId = leagues.ElementAt(2).Id,
-                Name = "2009-2010 NBA Regular Season",
-                StartDate = new DateTime(2009, 09, 02),
-                EndDate = new DateTime(2010, 04, 12),
-                IsPlayoffs = 0
-            });
-
-            foreach (Season season in seasons)
-            {
-                seasonRepository
-                    .Insert(season)
-                    .Wait();
-            }
-
-            return seasons.OrderBy(leg => leg.Name);
-        }
-
+       
         public static IEnumerable<Team> InsertTeams()
         {
             IRepositoryCollection collection = Collection();
@@ -371,7 +196,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return teams.OrderBy(leg => leg.Name);
         }
 
-        public static IEnumerable<TeamIdentity> InsertTeamIdentities()
+        public static IEnumerable<PoolEntry> InsertPoolEntries()
         {
             IRepositoryCollection collection = Collection();
             ITeamIdentityRepository teamIdentityRepository = collection.TeamIdentities();
@@ -431,7 +256,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return teamIdentities.OrderBy(leg => leg.Name);
         }
 
-        public static IEnumerable<Draft> InsertDrafts()
+        public static IEnumerable<AthletePick> InsertAthletePick()
         {
             IRepositoryCollection collection = Collection();
             IDraftRepository draftRepository = collection.Drafts();
@@ -493,7 +318,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return drafts.OrderBy(leg => leg.AthleteId);
         }
 
-        public static IEnumerable<JerseyNumber> InsertJerseyNumbers()
+        public static IEnumerable<TeamPick> InsertTeamPicks()
         {
             IRepositoryCollection collection = Collection();
             IJerseyNumberRepository jerseyNumberRepository = collection.JerseyNumbers();

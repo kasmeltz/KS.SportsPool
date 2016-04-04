@@ -55,6 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KS.SportsPool.Component\KS.SportsPool.Component.csproj">
+      <Project>{eef5d7db-9c8f-4b35-b6de-2f429924de18}</Project>
+      <Name>KS.SportsPool.Component</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KS.SportsPool.Data\KS.SportsPool.Data.csproj">
       <Project>{19dcb955-ebfc-4a8a-8da6-fcef6ebc3bba}</Project>
       <Name>KS.SportsPool.Data</Name>

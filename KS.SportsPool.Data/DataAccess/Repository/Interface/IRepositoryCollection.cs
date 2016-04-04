@@ -5,8 +5,10 @@
     /// </summary>
     public interface IRepositoryCollection
     {
-        IAthleteRepository Athletes();
+        IAthletePickRepository AthletePicks();
+        IAthleteRepository Athletes();        
         IPoolEntryRepository PoolEntries();
+        ITeamPickRepository TeamPicks();
         ITeamRepository Teams();
     }
 }
