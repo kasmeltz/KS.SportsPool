@@ -19,7 +19,9 @@
     <h4>@Model.Entry.Name</h4>
     <h5>@Model.Entry.Telephone &nbsp; @Model.Entry.Email</h5>
 
-    var athleteGroups = Model.Athletes.OrderBy(ath => ath.GroupName).GroupBy(tea => tea.GroupName);
+    @{
+        var athleteGroups = Model.Athletes.OrderBy(ath => ath.GroupName).GroupBy(tea => tea.GroupName);
+    }
 
     @{
         for (int round = 1; round <= 4; round++)
