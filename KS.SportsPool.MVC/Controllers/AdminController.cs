@@ -42,6 +42,29 @@ namespace KS.SportsPool.MVC.Controllers
             return View(teams);
         }
 
+        public async Task<ActionResult> DeleteTeam(int id)
+        {
+            IEnumerable<Team> teams = null;
+
+            try
+            {
+                await Repository.Teams().Delete(id);
+                teams = await Repository
+                    .Teams()
+                    .List(DateTime.Now.Year);
+                @ViewBag.Success = "The team was deleted successfully!";
+                return View("Teams", teams);
+            }
+            catch (Exception ex)
+            {
+                teams = await Repository
+                    .Teams()
+                    .List(DateTime.Now.Year);
+                @ViewBag.Error = "There was an error deleting the team!";
+                return View("Teams", teams);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddTeam(Team teamToAdd)
         {
@@ -49,6 +72,7 @@ namespace KS.SportsPool.MVC.Controllers
 
             try
             {
+                teamToAdd.Year = DateTime.Now.Year;
                 await Repository.Teams().Insert(teamToAdd);
                 teams = await Repository
                            .Teams()
@@ -71,8 +95,9 @@ namespace KS.SportsPool.MVC.Controllers
         {
             try
             {
+                teamToUpdate.Year = DateTime.Now.Year;
                 await Repository.Teams().Update(teamToUpdate);
-                return Content("The team was saved successfully");
+                return Content("The team was saved successfully!");
             }
             catch (Exception ex)
             {
@@ -91,6 +116,7 @@ namespace KS.SportsPool.MVC.Controllers
 
             try
             {
+                athleteToAdd.Year = DateTime.Now.Year;
                 await Repository.Athletes().Insert(athleteToAdd);
                 athletes = await Repository
                     .Athletes()
@@ -113,6 +139,7 @@ namespace KS.SportsPool.MVC.Controllers
         {
             try
             {
+                athleteToUpdate.Year = DateTime.Now.Year;
                 await Repository.Athletes().Update(athleteToUpdate);
                 return Content("The athlete was saved successfully");
             }
