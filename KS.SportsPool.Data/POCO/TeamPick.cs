@@ -1,6 +1,6 @@
 ﻿namespace KS.SportsPool.Data.POCO
 {
-    public class TeamPick
+    public class TeamPick : PocoDataObject
     {
         public int TeamId { get; set; }
         public int PoolEntryId { get; set; }

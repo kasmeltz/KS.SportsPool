@@ -7,6 +7,7 @@ namespace KS.SportsPool.Data.POCO
         public string Name { get; set; }
         public string Telephone { get; set; }
         public string Email { get; set; }
+        public int Score { get; set; }
 
         public IEnumerable<AthletePick> AthletePicks { get; set; }
         public IEnumerable<TeamPick> Round1Teams { get; set; }

@@ -16,7 +16,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             : base(cacheProvider)
         {
             CacheContainerName = "Athlete";
-            TableName = "[mlist].[Athlete]";
+            TableName = "[app].[Athlete]";
             CacheSeconds = 0;
         }
 
@@ -32,27 +32,27 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, FirstName, LastName, Position, Goals, Assists
+                Id, TeamId, GroupName, FirstName, LastName, Position, Goals, Assists
             FROM 
-                [mlist].[Athlete]
+                [app].[Athlete]
             WHERE
                 Id = @Id";
 
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, FirstName, LastName, Position, Goals, Assists
+                Id, TeamId, GroupName, FirstName, LastName, Position, Goals, Assists
             FROM 
-                [mlist].[Athlete]
+                [app].[Athlete]
             ORDER BY
                 LastName, FirstName";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, FirstName, LastName, Position, Goals, Assists
+                Id, TeamId, GroupName, FirstName, LastName, Position, Goals, Assists
             FROM 
-                [mlist].[Athlete]
+                [app].[Athlete]
             WHERE           
                 FirstName like @SearchTerms
             OR      
@@ -68,7 +68,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[Athlete]
+		        [app].[Athlete]
 	        WHERE	
 		        LastName = @LastName
             AND
@@ -76,15 +76,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [mlist].[Athlete]
-		        (FirstName, LastName, Position, Goals, Assists)
+		        INSERT INTO [app].[Athlete]
+		        (TeamId, GroupName, FirstName, LastName, Position, Goals, Assists)
 		        VALUES
-		        (@FirstName, @LastName, @Position, @Goals, @Assists)
+		        (@TeamId, @GroupName, @FirstName, @LastName, @Position, @Goals, @Assists)
 
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [mlist].[Athlete]
+		            [app].[Athlete]
 	            WHERE	
 		            LastName = @LastName
                 AND
@@ -103,7 +103,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[Athlete]
+		        [app].[Athlete]
 	        WHERE	
 		        LastName = @LastName
             AND
@@ -112,8 +112,10 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [mlist].[Athlete]
+                    [app].[Athlete]
                 SET
+                    TeamId = @TeamId,
+                    GroupName = @GroupName,
                     FirstName = @FirstName,
                     LastName = @LastName,
                     Position = @Position,

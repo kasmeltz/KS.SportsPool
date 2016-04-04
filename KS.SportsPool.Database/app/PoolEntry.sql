@@ -4,5 +4,6 @@
 	[Name] VARCHAR(60) NULL,
 	[Telephone] VARCHAR(15) NULL,
 	[Email] VARCHAR(60) NULL,
+	[Score] INT NULL,
 	PRIMARY KEY CLUSTERED ([Id] ASC)
 )

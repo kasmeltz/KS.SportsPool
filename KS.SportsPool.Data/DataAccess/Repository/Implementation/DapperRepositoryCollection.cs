@@ -24,12 +24,12 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 
         public IPoolEntryRepository PoolEntries()
         {
-            return new DaperPoolEntryRepository(CacheProvider);
+            return new DapperPoolEntryRepository(CacheProvider);
         }
 
         public ITeamPickRepository TeamPicks()
         {
-            return new DapperTeamPicksRepository(CacheProvider);
+            return new DapperTeamPickRepository(CacheProvider);
         }
 
         public ITeamRepository Teams()

@@ -16,7 +16,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             : base(cacheProvider)
         {
             CacheContainerName = "AthletePick";
-            TableName = "[mlist].[AthletePick]";
+            TableName = "[app].[AthletePick]";
             CacheSeconds = 0;
         }
 
@@ -33,7 +33,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT TOP 1
                 Id, AthleteId, PoolEntryId
             FROM 
-                [mlist].[AthletePick]
+                [app].[AthletePick]
             WHERE
                 Id = @Id";
 
@@ -42,7 +42,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT  
                 Id, AthleteId, PoolEntryId
             FROM 
-                [mlist].[AthletePick]
+                [app].[AthletePick]
             ORDER BY
                 PoolEntryId, AthleteId";    
 
@@ -54,7 +54,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[AthletePick]
+		        [app].[AthletePick]
 	        WHERE	
                 AthleteId = @AthleteId
             AND
@@ -62,7 +62,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [mlist].[AthletePick]
+		        INSERT INTO [app].[AthletePick]
 		        (AthleteId, PoolEntryId)
 		        VALUES
                 (@AthleteId, @PoolEntryId)
@@ -70,7 +70,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [mlist].[AthletePick]
+		            [app].[AthletePick]
 	            WHERE	
 		            AthleteId = @AthleteId
                 AND
@@ -89,7 +89,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[AthletePick]
+		        [app].[AthletePick]
 	        WHERE	
 		        AthleteId = @AthleteId
             AND
@@ -98,7 +98,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [mlist].[AthletePick]
+                    [app].[AthletePick]
                 SET
                     AthleteId = @AthleteId,
                     PoolEntryId = @PoolEntryId

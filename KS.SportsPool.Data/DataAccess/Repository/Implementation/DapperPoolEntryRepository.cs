@@ -16,7 +16,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             : base(cacheProvider)
         {
             CacheContainerName = "PoolEntry";
-            TableName = "[mlist].[PoolEntry]";
+            TableName = "[app].[PoolEntry]";
             CacheSeconds = 0;
         }
 
@@ -34,25 +34,25 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT TOP 1
                 Id, Name, Telephone, Email
             FROM 
-                [mlist].[PoolEntry]
+                [app].[PoolEntry]
             WHERE
                 Id = @Id";
 
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Telephone, Email
+                Id, Name, Telephone, Email, Score
             FROM 
-                [mlist].[PoolEntry]
+                [app].[PoolEntry]
             ORDER BY
                 Name";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, Telephone, Email
+                Id, Name, Telephone, Email, Score
             FROM 
-                [mlist].[PoolEntry]
+                [app].[PoolEntry]
             WHERE           
                 Name like @SearchTerms
             ORDER BY
@@ -66,21 +66,21 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[PoolEntry]
+		        [app].[PoolEntry]
 	        WHERE	
 		        Name = @Name
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [mlist].[PoolEntry]
-		        (Name, Telephone, Email)
+		        INSERT INTO [app].[PoolEntry]
+		        (Name, Telephone, Email, Score)
 		        VALUES
-                (@Name, @Telephone, @Email)
+                (@Name, @Telephone, @Email, @Score)
 		        
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [mlist].[PoolEntry]
+		            [app].[PoolEntry]
 	            WHERE	
 		            Name = @Name
             END
@@ -97,18 +97,19 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[PoolEntry]
+		        [app].[PoolEntry]
 	        WHERE	
 		        Name = @Name
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [mlist].[PoolEntry]
+                    [app].[PoolEntry]
                 SET
                     Name = @Name,
                     Telephone = @Telephone,
-                    Email = @Email
+                    Email = @Email,
+                    Score = @Score
 		        WHERE	
 		            Id = @Id
                     

@@ -180,7 +180,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
                     "Search is not supporrted by this repository");
             }
 
-            string cachekey = "Search" + searchTerms;
+            string cachekey = "Search" + CacheContainerName + searchTerms;
 
             IEnumerable<T> items = null;
 

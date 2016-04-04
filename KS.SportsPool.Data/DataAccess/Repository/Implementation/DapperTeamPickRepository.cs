@@ -16,7 +16,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             : base(cacheProvider)
         {
             CacheContainerName = "TeamPick";
-            TableName = "[mlist].[TeamPick]";
+            TableName = "[app].[TeamPick]";
             CacheSeconds = 0;
         }
 
@@ -33,7 +33,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT TOP 1
                 Id, TeamId, PoolEntryId, Round
             FROM 
-                [mlist].[TeamPick]
+                [app].[TeamPick]
             WHERE
                 Id = @Id";
 
@@ -42,7 +42,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT  
                 Id, TeamId, PoolEntryId, Round
             FROM 
-                [mlist].[TeamPick]
+                [app].[TeamPick]
             ORDER BY
                 PoolEntryId, TeamId";
 
@@ -54,7 +54,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[TeamPick]
+		        [app].[TeamPick]
 	        WHERE	
 		        TeamId = @TeamId
             AND
@@ -64,7 +64,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [mlist].[TeamPick]
+		        INSERT INTO [app].[TeamPick]
 		        (TeamId, PoolEntryId, Round)
 		        VALUES
 		        (@TeamId, @PoolEntryId, @Round)
@@ -72,7 +72,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [mlist].[TeamPick]
+		            [app].[TeamPick]
 	            WHERE	
 		            TeamId = @TeamId
                 AND
@@ -93,7 +93,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[TeamPick]
+		        [app].[TeamPick]
 	        WHERE	
 		        TeamId = @TeamId
             AND
@@ -104,7 +104,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [mlist].[TeamPick]
+                    [app].[TeamPick]
                 SET
                     TeamId = @TeamId,
                     PoolEntryId = @PoolEntryId,

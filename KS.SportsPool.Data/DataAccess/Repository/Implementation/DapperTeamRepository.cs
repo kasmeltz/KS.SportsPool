@@ -16,7 +16,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             : base(cacheProvider)
         {
             CacheContainerName = "Team";
-            TableName = "[mlist].[Team]";
+            TableName = "[app].[Team]";
             CacheSeconds = 0;
         }
 
@@ -34,7 +34,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT TOP 1
                 Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
             FROM 
-                [mlist].[Team]
+                [app].[Team]
             WHERE
                 Id = @Id";
 
@@ -43,7 +43,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT  
                 Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
             FROM 
-                [mlist].[Team]
+                [app].[Team]
             ORDER BY
                 Name";
 
@@ -52,7 +52,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             SELECT  
                 Id, Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4
             FROM 
-                [mlist].[Team]
+                [app].[Team]
             WHERE           
                 Name like @SearchTerms
             ORDER BY
@@ -66,13 +66,13 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[Team]
+		        [app].[Team]
 	        WHERE	
 		        Name = @Name
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [mlist].[Team]
+		        INSERT INTO [app].[Team]
 		        (Name, Abbreviation, Conference, Division, Round1, Round2, Round3, Round4)
 		        VALUES
                 (@Name, @Abbreviation, @Conference, @Division, @Round1, @Round2, @Round3, @Round4)
@@ -80,7 +80,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [mlist].[Team]
+		            [app].[Team]
 	            WHERE	
 		            Name = @Name
             END
@@ -97,14 +97,14 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[Team]
+		        [app].[Team]
 	        WHERE	
 		        Name = @Name
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [mlist].[Team]
+                    [app].[Team]
                 SET
                     Name = @Name,
                     Abbreviation = @Abbreviation,
