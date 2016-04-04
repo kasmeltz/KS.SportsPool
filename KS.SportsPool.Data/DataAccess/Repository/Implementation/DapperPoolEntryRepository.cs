@@ -32,7 +32,7 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, Name, Telephone, Email
+                Id, Name, Telephone, Email, Score
             FROM 
                 [app].[PoolEntry]
             WHERE

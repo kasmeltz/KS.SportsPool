@@ -36,9 +36,9 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             ITeamRepository Teams = collection.Teams();
 
             AthletePicks.PurgeForTest().Wait();
-            Athletes.PurgeForTest().Wait();
-            PoolEntries.PurgeForTest().Wait();
             TeamPicks.PurgeForTest().Wait();
+            PoolEntries.PurgeForTest().Wait();
+            Athletes.PurgeForTest().Wait();            
             Teams.PurgeForTest().Wait();
         }
 
@@ -275,7 +275,7 @@ namespace KS.SportsPool.Data.Test.DataAccess.Repository.Implementation
             return poolEntries.OrderBy(leg => leg.Name);
         }
 
-        public static IEnumerable<AthletePick> InsertAthletePick()
+        public static IEnumerable<AthletePick> InsertAthletePicks()
         {
             IRepositoryCollection collection = Collection();
             IAthletePickRepository athletePickRepository = collection.AthletePicks();
