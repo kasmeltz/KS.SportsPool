@@ -121,7 +121,7 @@ namespace KS.SportsPool.MVC.Controllers
             {
                 athleteToAdd.Year = DateTime.Now.Year;
                 await Repository.Athletes().Insert(athleteToAdd);
-                TempData["Success"] = "The athlete '" + athleteToAdd.FirstName + " "+ athleteToAdd.LastName + "' was added successfully!";
+                TempData["Success"] = "The athlete '" + athleteToAdd.FirstName + " " + athleteToAdd.LastName + "' was added successfully!";
                 return RedirectToAction("Athletes");
             }
             catch (Exception ex)
@@ -150,10 +150,78 @@ namespace KS.SportsPool.MVC.Controllers
             }
         }
 
-        public ActionResult Pools()
+        public async Task<ActionResult> Pools()
         {
             ViewBag.Title = UIUtilities.SiteTitle;
-            return View();
+            ViewBag.Success = TempData["Success"];
+            ViewBag.Error = TempData["Error"];
+            ViewBag.ScrollSection = TempData["ScrollSection"];
+
+            IEnumerable<Team> teams = await Repository
+                .Teams()
+                .List(DateTime.Now.Year);
+
+            IEnumerable<Athlete> athletes = await Repository
+               .Athletes()
+               .List(DateTime.Now.Year);
+
+            IEnumerable<PoolEntry> pools = await Repository
+                .PoolEntries()
+                .List(DateTime.Now.Year);
+
+            return View(new PoolListViewModel { Athletes = athletes, Teams = teams, Entries = pools });
+        }
+
+        public async Task<ActionResult> DeletePool(int id)
+        {
+            try
+            {
+                await Repository.PoolEntries().Delete(id);
+                TempData["Success"] = "The pool was deleted successfully!";
+                return RedirectToAction("Pools");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "There was an error deleting the pool!";
+                return RedirectToAction("Pools");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddPool(PoolEntry poolToAdd)
+        {
+            try
+            {
+                poolToAdd.Year = DateTime.Now.Year;
+                await Repository.PoolEntries().Insert(poolToAdd);
+                TempData["Success"] = "The pool for '" + poolToAdd.Name + "' was added successfully!";
+                TempData["ScrollSection"] = "PoolDiv" + poolToAdd.Id;
+                return RedirectToAction("Pools");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "There was an error adding the pool for '" + poolToAdd.Name + "'!";
+                return RedirectToAction("Pools");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdatePool(PoolEntry poolToUpdate)
+        {
+            try
+            {
+                poolToUpdate.Year = DateTime.Now.Year;
+                await Repository.PoolEntries().Update(poolToUpdate);
+                TempData["Success"] = "The pool for '" + poolToUpdate.Name + "' was updated successfully!";
+                TempData["ScrollSection"] = "PoolDiv" + poolToUpdate.Id;
+                return RedirectToAction("Pools");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "There was an error updating the pool for '" + poolToUpdate.Name + "'!";
+                TempData["ScrollSection"] = "PoolDiv" + poolToUpdate.Id;
+                return RedirectToAction("Pools");
+            }
         }
     }
 }

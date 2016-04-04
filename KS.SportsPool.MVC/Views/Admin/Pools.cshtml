@@ -1,2 +1,54 @@
-﻿<h1>@ViewBag.Title</h1>
-<img src="~/Images/NHL_Shield.png" />
+﻿@using KS.SportsPool.MVC.Models;
+@using KS.SportsPool.Data.POCO;
+@model PoolListViewModel
+
+<div style="position: fixed; text-align: center; background:#dddddd; padding: 5px; bottom:0px; left:0px; width:100%; border: 1px solid black;">
+    <p id="errorMessage" style="color: #ff0000; font-size:large;">
+        @ViewBag.Error
+    </p>
+    <p id="successMessage" style="color: #00ff00; font-size:large;">
+        @ViewBag.Success
+    </p>
+    <a href="/Admin/UpdateScores" class="btn btn-primary">Update Pool Scores</a>
+</div>
+
+<div style="width: 100%; text-align: center;">
+    <a href="/Admin/Pools" class="btn btn-primary">Pools</a>
+    <a href="/Admin/Athletes" class="btn btn-primary">Athletes</a>
+    <a href="/Admin/Teams" class="btn btn-primary">Teams</a>
+    <h1>Pool</h1>
+    <div style="border: 1px solid #000000; padding: 5px;">
+        @using (Html.BeginForm("AddPool", "Admin", null, FormMethod.Post))
+        {
+            <p>
+                @Html.Label("Name")
+                &nbsp;
+                @Html.TextBox("Name")
+                &nbsp;
+                @Html.Label("Telephone")
+                &nbsp;
+                @Html.TextBox("Telephone")
+                &nbsp;
+                @Html.Label("Email")
+                &nbsp;
+                @Html.TextBox("Email")
+            </p>
+            <button type="submit" class="btn btn-primary">Add Pool</button>
+        }
+    </div>
+
+    <div id="teamList">
+        @{Html.RenderPartial(@"PoolList", Model);}
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var anchor = document.getElementById('@ViewBag.ScrollSection');
+            if (anchor) {
+                anchor.scrollIntoView(true);
+            }
+        });
+    </script>
+}

@@ -13,7 +13,6 @@
             <img style="max-height: 100px; max-width: 100px;" src="~/Images/Teams/@imgSrc" />
             <br />
             <button type="submit" class="btn btn-primary">Save Team</button>
-            <br />
             <a href="/Admin/DeleteTeam/@{ WriteLiteral(Model.Id); }" class="btn btn-danger">Delete Team</a>
         </span>
         <span class="td">@Html.TextBox("Name", Model.Name)</span>

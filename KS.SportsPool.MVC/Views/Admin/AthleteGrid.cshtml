@@ -21,7 +21,6 @@
         @Html.Hidden("GroupName", Model.Athlete.GroupName)
         <span class="td">
             <button type="submit" class="btn btn-primary">Save Athlete</button>
-            <br />
             <a href="/Admin/DeleteAthlete/@{ WriteLiteral(Model.Athlete.Id); }" class="btn btn-danger">Delete Athlete</a>
         </span>
         <span class="td">@Html.DropDownList("TeamId", teamListItems)</span>

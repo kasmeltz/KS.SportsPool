@@ -1,0 +1,33 @@
+﻿@using KS.SportsPool.MVC.Models;
+@using KS.SportsPool.Data.POCO;
+@model PoolViewModel
+
+@{
+    @*
+    List<SelectListItem> teamListItems = new List<SelectListItem>();
+    foreach (Team team in Model.Teams)
+    {
+        teamListItems.Add(new SelectListItem
+        {
+            Text = team.Name,
+            Value = team.Id.ToString(),
+            Selected = team.Id == Model.Athlete.TeamId
+        });
+    }
+        *@
+
+    using (Html.BeginForm("UpdatePool", "Admin", null, FormMethod.Post, new { @class = "tr", id = "PoolDiv" + Model.Entry.Id }))
+    {
+        @Html.Hidden("Id", Model.Entry.Id)
+        @Html.Hidden("Year", Model.Entry.Year)
+        @Html.Hidden("Year", Model.Entry.Score)
+        <span class="td">
+            <button type="submit" class="btn btn-primary">Save Pool</button>
+            <a href="/Admin/DeletePool/@{ WriteLiteral(Model.Entry.Id); }" class="btn btn-danger">Delete Pool</a>
+        </span>
+        <span class="td">@Html.TextBox("Name", Model.Entry.Name)</span>
+        <span class="td">@Html.TextBox("Telephone", Model.Entry.Telephone)</span>
+        <span class="td">@Html.TextBox("Email", Model.Entry.Email)</span>
+        <span class="td">@Model.Entry.Score</span>
+    }
+}
