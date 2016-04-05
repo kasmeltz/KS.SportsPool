@@ -1,0 +1,21 @@
+﻿@using KS.SportsPool.Data.POCO;
+@model PoolEntry
+
+@{
+    string id = "PoolEntry" + Model.Id;
+}
+
+@using (Ajax.BeginForm("PoolEntryDetails", new { Id = Model.Id }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = id }))
+{
+    <div class="poolContainer">
+        <div class="poolButton">
+            <button type="submit" class="btn btn-primary">View Picks</button>
+        </div>
+        <div class="poolRank">@Model.Rank</div>
+        <div class="poolName">@Model.Name</div>
+        <div class="poolScore">@Model.Score</div>
+        <div style="clear: both;"></div>
+        <div class="poolDetails" id="@id"></div>
+    </div>
+    <div style="clear: both;"></div>
+}

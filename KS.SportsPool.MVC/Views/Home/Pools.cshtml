@@ -1,2 +1,18 @@
-﻿<h1>@ViewBag.Title</h1>
-<img src="~/Images/NHL_Shield.png" />
+﻿@using KS.SportsPool.Data.POCO
+@model IEnumerable<PoolEntry>
+
+<div style="width: 100%; text-align: center;">
+    <h1>@ViewBag.Title</h1>   
+    <h3>1st Prize $@ViewBag.Prizes[0]&nbsp;2nd Prize $@ViewBag.Prizes[1]&nbsp;3rd Prize $@ViewBag.Prizes[2]</h3>
+    <div class="poolHeader">
+        <div class="poolButton">&nbsp;</div>
+        <div class="poolRank">Rank</div>
+        <div class="poolName">Name</div>
+        <div class="poolScore">Score</div>
+    </div>
+    <div style="clear: both;"></div>
+    @foreach (PoolEntry entry in Model)
+    {
+        Html.RenderPartial("PoolGrid", entry);
+    }    
+</div>

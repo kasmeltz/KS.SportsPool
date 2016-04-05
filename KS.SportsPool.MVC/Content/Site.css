@@ -38,3 +38,83 @@ span.td
 {
     display:table-cell;
 }
+
+.poolHeader {
+    width: 100%;
+    text-align: center;
+    font-size: large;
+    font-weight: 900;
+}
+
+.poolContainer {
+    width: 100%;
+    text-align: center;
+    font-size: medium;
+    font-weight: 600;
+    border: 2px solid #aaddee;
+    border-radius: 10px;
+    margin: 5px;    
+}
+
+.poolButton {
+    width: 10%;
+    float: left;
+    background: #aaddee;
+    height: 40px;
+}
+
+.poolRank {
+    width: 20%;
+    float: left;
+    background: #aaddee;
+    height: 40px;
+}
+
+.poolName {
+    width: 40%;
+    float: left;
+    background: #aaddee;
+    height: 40px;
+}
+
+.poolScore {
+    width: 30%;
+    float: left;
+    background: #aaddee;
+    height: 40px;
+}
+
+.poolDetails {
+    width: 100%;
+}
+
+.poolAthleteContainer {
+    background: #eeffdd;
+    margin: 5px;
+    border: 1px solid black;
+}
+
+.poolAthleteGroupHeader {
+    width: 30%;
+    float: left;
+    color: #6688aa;
+}
+
+.poolAthleteName {
+    color: #000000;
+}
+
+.poolTeamContainer {
+    background: #efffef;
+    margin: 5px;
+    border: 1px solid black;
+}
+
+.poolTeamRoundHeader {
+    background: #ddeedd;
+    border: 1px solid black;
+}
+
+.poolTeamRound {
+
+}

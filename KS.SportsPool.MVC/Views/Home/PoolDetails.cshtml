@@ -1,0 +1,59 @@
+﻿@using KS.SportsPool.MVC.Models;
+@using KS.SportsPool.Data.POCO;
+@model PoolDetailsViewModel
+
+@{
+    var athleteGroups = Model.AthletePicks
+        .OrderBy(ath => ath.Athlete.GroupName)
+        .GroupBy(ath => ath.Athlete.GroupName);
+
+    <div class="poolAthleteContainer">
+        @foreach (var athleteGroup in athleteGroups)
+        {
+            var firstAthlete = athleteGroup.FirstOrDefault();
+            <div class="poolAthleteGroupHeader">
+                <div>@firstAthlete.Athlete.GroupName</div>
+                <div class="poolAthleteName">@firstAthlete.Athlete.FirstName @firstAthlete.Athlete.LastName - (@firstAthlete.Athlete.Points)</div>
+            </div>
+        }
+        <div style="clear: both;"></div>
+    </div>
+
+    var teamRoundGroups = Model.TeamPicks
+        .OrderBy(team => team.Round)
+        .GroupBy(team => team.Round);
+
+    <div class="poolTeamContainer">
+        @foreach (var teamRoundGroup in teamRoundGroups)
+        {
+            var firstTeam = teamRoundGroup.FirstOrDefault();
+            <div class="poolTeamRoundHeader">
+                Round @firstTeam.Round
+            </div>
+            <div class="poolTeamRound">
+                @foreach (var team in teamRoundGroup)
+                {
+                    string imgSrc = team.Team.Abbreviation.ToUpper() + "_50.png";
+                    <img style="max-height: 100px; max-width: 100px;" src="~/Images/Teams/@imgSrc" />
+                    if (firstTeam.Round == 1)
+                    {
+                        @team.Team.Round1
+                    }
+                    else if (firstTeam.Round == 2)
+                    {
+                        @team.Team.Round2
+                    }
+                    else if (firstTeam.Round == 3)
+                    {
+                        @team.Team.Round3
+                    }
+                    else if (firstTeam.Round == 4)
+                    {
+                        @team.Team.Round4
+                    }
+                }
+            </div>
+        }
+        <div style="clear: both;"></div>
+    </div>
+}

@@ -10,5 +10,13 @@
         public string Position { get; set; }
         public int Goals { get; set; }
         public int Assists { get; set; }
+
+        public int Points
+        {
+            get
+            {
+                return Goals + Assists;
+            }
+        }
     }
 }

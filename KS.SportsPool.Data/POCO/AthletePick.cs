@@ -4,5 +4,6 @@
     {
         public int AthleteId { get; set; }
         public int PoolEntryId { get; set; }
+        public Athlete Athlete { get; set; }
     }
 }
