@@ -1,7 +1,9 @@
-﻿using KS.SportsPool.Component.Caching.Interface;
+﻿using Dapper;
+using KS.SportsPool.Component.Caching.Interface;
 using KS.SportsPool.Data.DataAccess.Repository.Interface;
 using KS.SportsPool.Data.POCO;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
@@ -45,6 +47,24 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             {
                 EntryId = id,
             }, "TeamForEntry" + id);
+        }
+
+        public async Task DeleteForEntry(int id)
+        {
+            using (SqlConnection connection =
+             SqlConnectionManager.GetConnection(DbConnectionString))
+            {
+                await connection.ExecuteAsync(@"
+                SET NOCOUNT ON;
+                DELETE FROM 
+                    [app].[TeamPick]
+                WHERE
+                    PoolEntryId = @Id",
+                new
+                {
+                    Id = id
+                }).ConfigureAwait(false);
+            }
         }
 
         private const string _getSql = @"

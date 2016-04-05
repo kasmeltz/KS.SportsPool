@@ -9,7 +9,15 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Interface
         /// <summary>
         /// Returns all of the Athlete Picks for the provided Pool Entry.
         /// </summary>
+        /// <param name="id"></param>
         /// <returns>All of the Athlete Picks for the provided Pool Entry.</returns>
         Task<IEnumerable<AthletePick>> ListForEntry(int id);
+
+        /// <summary>
+        /// Deletes all of the Athlete Picks for an entry
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task DeleteForEntry(int id);
     }
 }

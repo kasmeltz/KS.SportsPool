@@ -171,7 +171,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\PoolDetailViewModel.cs" />
+    <Compile Include="Models\PoolViewModel.cs" />
     <Compile Include="Models\AthleteViewModel.cs" />
     <Compile Include="Models\AthleteListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using KS.SportsPool.Component.Caching.Interface;
 using KS.SportsPool.Data.DataAccess.Repository.Interface;
 using KS.SportsPool.Data.POCO;
+using System.Data.SqlClient;
+using Dapper;
 
 namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
 {
@@ -46,6 +48,24 @@ namespace KS.SportsPool.Data.DataAccess.Repository.Implementation
             {
                 EntryId = id,
             }, "AthletePickForEntry" + id);
+        }
+
+        public async Task DeleteForEntry(int id)
+        {
+            using (SqlConnection connection =
+             SqlConnectionManager.GetConnection(DbConnectionString))
+            {
+                await connection.ExecuteAsync(@"
+                SET NOCOUNT ON;
+                DELETE FROM 
+                    [app].[AthletePick]
+                WHERE
+                    PoolEntryId = @Id",
+                new
+                {
+                    Id = id
+                }).ConfigureAwait(false);
+            }
         }
 
         private const string _getSql = @"

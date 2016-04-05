@@ -10,9 +10,6 @@ namespace KS.SportsPool.Data.POCO
         public int Score { get; set; }
 
         public IEnumerable<AthletePick> AthletePicks { get; set; }
-        public IEnumerable<TeamPick> Round1Teams { get; set; }
-        public IEnumerable<TeamPick> Round2Teams { get; set; }
-        public IEnumerable<TeamPick> Round3Teams { get; set; }
-        public IEnumerable<TeamPick> Round4Teams { get; set; }
+        public IEnumerable<TeamPick> TeamPicks { get; set; }
     }
 }

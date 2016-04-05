@@ -3,6 +3,7 @@ using KS.SportsPool.MVC.Models;
 using KS.SportsPool.MVC.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -218,6 +219,11 @@ namespace KS.SportsPool.MVC.Controllers
 
         public async Task<ActionResult> PoolDetails(int id)
         {
+            ViewBag.Title = UIUtilities.SiteTitle;
+            ViewBag.Success = TempData["Success"];
+            ViewBag.Error = TempData["Error"];
+            ViewBag.ScrollSection = TempData["ScrollSection"];
+
             PoolEntry entry = await Repository
                 .PoolEntries()
                 .Get(id);
@@ -244,8 +250,61 @@ namespace KS.SportsPool.MVC.Controllers
                 Athletes = athletes,
                 Teams = teams,
                 AthletePicks = athletePicks,
-                TeamPicks = teamPicks,
+                TeamPicks = teamPicks
             });
+        }
+
+        protected async Task CreateTeamPicks(int entryId, int round, IEnumerable<int> ids)
+        {
+            foreach (int id in ids)
+            {
+                if (id == 0)
+                {
+                    continue;
+                }
+
+                TeamPick teamPick = new TeamPick();
+                teamPick.Round = round;
+                teamPick.PoolEntryId = entryId;
+                teamPick.Year = DateTime.Now.Year;
+                teamPick.TeamId = id;
+                await Repository.TeamPicks()
+                    .Insert(teamPick);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PoolDetails(PoolViewModel model)
+        {
+            try
+            {
+                await Repository.AthletePicks()
+                    .DeleteForEntry(model.Entry.Id);
+
+                foreach (AthletePick athletePick in model.AthletePicks)
+                {
+                    athletePick.PoolEntryId = model.Entry.Id;
+                    athletePick.Year = DateTime.Now.Year;
+                    await Repository.AthletePicks()
+                        .Insert(athletePick);
+                }
+
+                await Repository.TeamPicks()
+                    .DeleteForEntry(model.Entry.Id);
+
+                await CreateTeamPicks(model.Entry.Id, 1, model.SelectedTeamsRound1);
+                await CreateTeamPicks(model.Entry.Id, 2, model.SelectedTeamsRound2);
+                await CreateTeamPicks(model.Entry.Id, 3, model.SelectedTeamsRound3);
+                await CreateTeamPicks(model.Entry.Id, 4, model.SelectedTeamsRound4);
+
+                TempData["Success"] = "The pool picks have been updated successfully!";                
+            }
+            catch(Exception ex)
+            {
+                TempData["Error"] = "Their was an error updating the pool picks";
+            }
+
+            return RedirectToAction("PoolDetails", new { id = model.Entry.Id });
         }
 
         public async Task<ActionResult> UpdateScores()

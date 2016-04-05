@@ -18,49 +18,103 @@
     <a href="/Admin/Teams" class="btn btn-primary">Teams</a>
     <h4>@Model.Entry.Name</h4>
     <h5>@Model.Entry.Telephone &nbsp; @Model.Entry.Email</h5>
-
     @{
-        var athleteGroups = Model.Athletes.OrderBy(ath => ath.GroupName).GroupBy(tea => tea.GroupName);
-    }
-
-    @{
-        for (int round = 1; round <= 4; round++)
+        using (Html.BeginForm("PoolDetails", "Admin", FormMethod.Post))
         {
-            <div style="color: #00ff00; background:#000000;">Round @round</div>
-            var teamConferenceGroups = Model.Teams.OrderBy(tea => tea.Conference).GroupBy(tea => tea.Conference);
-            foreach (var teamConference in teamConferenceGroups)
+            <div>
+                <button type="submit" class="btn btn-success">Save Picks</button>
+            </div>
+            @Html.Hidden("Entry.Id", Model.Entry.Id)
+            var athleteGroups = Model.Athletes.OrderBy(ath => ath.GroupName).GroupBy(tea => tea.GroupName);
+            int count = 0;
+            foreach (var athleteGroup in athleteGroups)
             {
-                Team conferenceTeam = teamConference.FirstOrDefault();
-                @:<div style="float: left; width: 50%;">
-                    <div style="color: #00cc00; background:#000000;">@conferenceTeam.Conference</div>
-                var teamDivisionGroups = teamConference.GroupBy(tea => tea.Division);
-                foreach (var teamDivision in teamDivisionGroups)
+                var groupAthlete = athleteGroup.FirstOrDefault();
+                List<SelectListItem> athleteListItems = new List<SelectListItem>();
+                foreach (Athlete athlete in athleteGroup)
                 {
-                    Team divisionTeam = teamDivision.FirstOrDefault();
-                    List<SelectListItem> teamListItems = new List<SelectListItem>();
-                    foreach (Team team in teamDivision)
+                    bool isSelected = false;
+                    var pickedTeams = Model.AthletePicks.Where(ath => ath.AthleteId == athlete.Id);
+                    if (pickedTeams.Count() > 0)
                     {
-                        bool isSelected = false;
-                        var pickedTeams = Model.TeamPicks.Where(tp => tp.Round == round && tp.Id == team.Id);
-                        if (pickedTeams.Count() > 0)
-                        {
-                            isSelected = true;
-                        }
-                        teamListItems.Add(new SelectListItem
-                        {
-                            Text = team.Name,
-                            Value = team.Id.ToString(),
-                            Selected = isSelected
-                        });
+                        isSelected = true;
                     }
-                    <div style="float:left;  width: 50%;">
-                        <div style="color: #009900; background:#000000;">@divisionTeam.Division</div>
-                        @Html.ListBox("TeamPicks", teamListItems)
-                    </div>
+                    athleteListItems.Add(new SelectListItem
+                    {
+                        Text = athlete.FirstName + " " + athlete.LastName,
+                        Value = athlete.Id.ToString(),
+                        Selected = isSelected
+                    });
                 }
+                @:<div style="float: left; width: 12.5%;">
+                    <div style="color: #ff0000; background:#000000;">@groupAthlete.GroupName</div>
+                    @Html.DropDownList("AthletePicks["+ count + "].AthleteId", athleteListItems)
                 @:</div>
-        }
+                count++;
+            }
+
             <div style="clear: both;"></div>
+            for (int round = 1; round <= 4; round++)
+            {
+                <div style="color: #00ff00; background:#000000;">Round @round</div>
+                var teamConferenceGroups = Model.Teams.OrderBy(tea => tea.Conference).GroupBy(tea => tea.Conference);
+                foreach (var teamConference in teamConferenceGroups)
+                {
+                    Team conferenceTeam = teamConference.FirstOrDefault();
+                    @:<div style="float: left; width: 50%;">
+                        <div style="color: #00cc00; background:#000000;">@conferenceTeam.Conference</div>
+                    var teamDivisionGroups = teamConference.GroupBy(tea => tea.Division);
+                    foreach (var teamDivision in teamDivisionGroups)
+                    {
+                        bool anySelected = false;
+                        Team divisionTeam = teamDivision.FirstOrDefault();
+                        List<SelectListItem> teamListItems = new List<SelectListItem>();
+                        foreach (Team team in teamDivision)
+                        {
+                            bool isSelected = false;
+                            var pickedTeams = Model.TeamPicks.Where(tp => tp.Round == round && tp.TeamId == team.Id);
+                            if (pickedTeams.Count() > 0)
+                            {
+                                isSelected = true;
+                                anySelected = true;
+                            }
+
+                            teamListItems.Add(new SelectListItem
+                            {
+                                Text = team.Name,
+                                Value = team.Id.ToString(),
+                                Selected = isSelected
+                            });
+                        }
+
+                        if (round > 2)
+                        {
+                            teamListItems.Insert(0, new SelectListItem
+                            {
+                                Text = "",
+                                Value = "0",
+                                Selected = !anySelected
+                            });
+                        }
+
+                        <div style="float:left;  width: 50%;">
+                            <div style="color: #009900; background:#000000;">@divisionTeam.Division</div>
+                            @if (round == 1)
+                            {
+                                @Html.ListBox("SelectedTeamsRound" + round, teamListItems)
+                            }
+                            else
+                            {
+                                @Html.DropDownList("SelectedTeamsRound" + round, teamListItems)
+                            }
+                        </div>
+                    }
+                    @:</div>
+                }
+                <div style="clear: both;"></div>
+                }
+            }
         }
-    }
 </div>
+
+
