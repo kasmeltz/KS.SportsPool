@@ -297,9 +297,9 @@ namespace KS.SportsPool.MVC.Controllers
                 await CreateTeamPicks(model.Entry.Id, 3, model.SelectedTeamsRound3);
                 await CreateTeamPicks(model.Entry.Id, 4, model.SelectedTeamsRound4);
 
-                TempData["Success"] = "The pool picks have been updated successfully!";                
+                TempData["Success"] = "The pool picks have been updated successfully!";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = "Their was an error updating the pool picks";
             }
@@ -309,6 +309,80 @@ namespace KS.SportsPool.MVC.Controllers
 
         public async Task<ActionResult> UpdateScores()
         {
+            try
+            {
+                IEnumerable<PoolEntry> entries = await Repository
+                    .PoolEntries()
+                    .List(DateTime.Now.Year);
+
+                IEnumerable<Team> teams = await Repository
+                    .Teams()
+                    .List(DateTime.Now.Year);
+
+                IEnumerable<Athlete> athletes = await Repository
+                   .Athletes()
+                   .List(DateTime.Now.Year);
+
+                IEnumerable<AthletePick> athletePicks = await Repository
+                    .AthletePicks()
+                    .List(DateTime.Now.Year);
+
+                IEnumerable<TeamPick> teamPicks = await Repository
+                   .TeamPicks()
+                   .List(DateTime.Now.Year);
+
+                Dictionary<int, int> poolScores = new Dictionary<int, int>();
+                Dictionary<int, int> athleteScores = new Dictionary<int, int>();
+                Dictionary<Tuple<int, int>, int> teamScores = new Dictionary<Tuple<int, int>, int>();
+
+                foreach (Athlete athlete in athletes)
+                {
+                    athleteScores[athlete.Id] = athlete.Goals + athlete.Assists;
+                }
+
+                foreach (Team team in teams)
+                {
+                    Tuple<int, int> key;
+                    key = new Tuple<int, int>(team.Id, 1);
+                    teamScores[key] = team.Round1;
+                    key = new Tuple<int, int>(team.Id, 2);
+                    teamScores[key] = team.Round2;
+                    key = new Tuple<int, int>(team.Id, 3);
+                    teamScores[key] = team.Round3;
+                    key = new Tuple<int, int>(team.Id, 4);
+                    teamScores[key] = team.Round4;
+                }
+
+                foreach (PoolEntry entry in entries)
+                {
+                    poolScores[entry.Id] = 0;
+                }
+
+                foreach (AthletePick athletePick in athletePicks)
+                {
+                    poolScores[athletePick.PoolEntryId] += athleteScores[athletePick.AthleteId];
+                }
+
+                foreach (TeamPick teamPick in teamPicks)
+                {
+                    Tuple<int, int> key;
+                    key = new Tuple<int, int>(teamPick.TeamId, teamPick.Round);
+                    poolScores[teamPick.PoolEntryId] += teamScores[key];
+                }
+
+                foreach (PoolEntry entry in entries)
+                {
+                    entry.Score = poolScores[entry.Id];
+                    await Repository.PoolEntries().Update(entry);
+                }
+
+                TempData["Success"] = "The pool scores have been updated successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "There was an error updating the pool scores!";
+            }
+
             return RedirectToAction("Pools");
         }
     }
