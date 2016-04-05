@@ -16,3 +16,29 @@
         Html.RenderPartial("PoolGrid", entry);
     }    
 </div>
+
+@section scripts {
+    <script type="text/javascript">
+        var loaded = {};
+        var visible = {};
+        function togglePanel(id) {
+            var element = $('#PoolEntry' + id);
+            if (!loaded[id]) {
+                $.post('/Home/PoolEntryDetails/' + id, function (data) {
+                    element.html(data);
+                });
+                loaded[id] = true;
+                visible[id] = true;
+                return;
+            }
+
+            if (!visible[id]) {
+                element.show();
+                visible[id] = true;
+            } else {
+                element.hide();
+                visible[id] = false;
+            }            
+        }
+    </script>
+}
